@@ -49,3 +49,13 @@ Example tested with Anaconda (for Python 2.7, 32bit), alternatively Python 2.7.1
 2. Set Project Options > Miscellaneous > Folder Options for "Matlab" to C:\Program Files\MATLAB\R2017b\bin\matlab.exe (adapt if a different version of Matlab is used).
 
 Example tested with Matlab 2017b.
+
+
+### Visual3D
+
+#### Preparation
+
+1. Install Visual3D.
+2. Set Project Options > Miscellaneous > Folder Options for "Visual 3d" to C:\Program Files\Visual3D v6 x64\Visual3D.exe (adapt if Visual3D is installed at different location).
+
+Example tested with Visual3D 6.01.18.
