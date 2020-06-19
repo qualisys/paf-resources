@@ -3,23 +3,45 @@ include ($template_directory . 'template_xml.php');
 ?> 
 
 File_New
-
 ;
 
 ! ==================================
 ! Load files
 ! ==================================
 
+<?
+// Load movement files and add tags.
 
-File_Open 
-/FILE_NAME=<?=$working_directory?>Dynamic*.c3d
-; 
+foreach($measurements as $m) {
+	if(strstr($m["Used"], "True") && strstr($m["Measurement_type"], "Dynamic"))	{
+		$path_parts = pathinfo($m["Filename"]);
+?>
 
-Assign_Tags_To_Files
-/MOTION_FILE_NAMES=<?=$working_directory?>Dynamic*.c3d 
-! /QUERY=
-/TAGS=Dynamic
-;
+		File_Open 
+		/FILE_NAME=<?=$working_directory . $path_parts['filename'] . ".c3d";?> 
+		; 
+
+		Assign_Tags_To_Files
+		/MOTION_FILE_NAMES=<?=$working_directory . $path_parts['filename'] . ".c3d";?> 
+		! /QUERY=
+		/TAGS=Dynamic
+		;
+
+		Assign_Tags_To_Files
+		/MOTION_FILE_NAMES=<?=$working_directory . $path_parts['filename'] . ".c3d";?> 
+		! /QUERY=
+		/TAGS=<?=$session['Test_condition'];?> 
+		;
+
+		Assign_Tags_To_Files
+		/MOTION_FILE_NAMES=<?=$working_directory . $path_parts['filename'] . ".c3d";?> 
+		! /QUERY=
+		/TAGS=<?=$m['Comments'];?> 
+		;
+
+<?
+	}
+}?> 
 
 !====================================================
 !Save frame rate so that it is available for other commands

@@ -19,11 +19,12 @@ Types:
 
   Session:
     Session:
-      Fields: [Session ID, Operator]
+      Fields: [Session ID, Test condition, Operator]
       Measurements: [Static, Dynamic]
       Analyses: [Processing]
-      Display order: [Session ID, Operator, Comments]
-      Directory pattern: $Creation date$_$Session ID$
+      Display order: [Session ID, Test condition, Operator, Comments]
+      Directory pattern: $Creation date$_$Session ID$_$Test condition$
+      PDF guide: ..\Documentation\Marker_Guide_Sports_Marker_Set.pdf
 
 Measurements:
   Fields:
@@ -34,12 +35,12 @@ Measurements:
   Static:
     Measurement length: 1
     Measurement type: Static
-    AIM models: Static.qam
+    AIM models: Sports_Marker_Set.qam
   Dynamic:
     Maximum count: 5
     Count: 3
     Measurement type: Dynamic
-    AIM models: Dynamic.qam
+    AIM models: Sports_Marker_Set.qam
 
 Analyses:
   Processing:
@@ -49,6 +50,7 @@ Analyses:
     Export measurements: c3d
     Arguments: [/s, $WorkingDirectory$example.v3s]
     Template files: ['*.v3s']
+    Do not wait for Application: Yes
 
 Fields:
   ID:
@@ -91,9 +93,12 @@ Fields:
     Min: 0
   Sex:
     Type: Enum
-    Values: [Female, Male, Other]
+    Values: [Unspecified, Female, Male, Other]
     Inherit: Connect
+    Default: Unspecified
   Measurement type:
+    Type: String
+  Test condition:
     Type: String
 
 Columns:
