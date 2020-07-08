@@ -13,7 +13,7 @@ File_New
 // Load movement files and add tags.
 
 foreach($measurements as $m) {
-	if(strstr($m["Used"], "True") && strstr($m["Measurement_type"], "Dynamic"))	{
+	if(strstr($m["Used"], "True") && !strstr($m["Measurement_type"], "Static"))	{
 		$path_parts = pathinfo($m["Filename"]);
 ?>
 
@@ -24,7 +24,7 @@ foreach($measurements as $m) {
 		Assign_Tags_To_Files
 		/MOTION_FILE_NAMES=<?=$working_directory . $path_parts['filename'] . ".c3d";?> 
 		! /QUERY=
-		/TAGS=Dynamic
+		/TAGS=<?=$m["Measurement_type"];?>
 		;
 
 		Assign_Tags_To_Files
@@ -121,8 +121,18 @@ Lowpass_Filter
 !Load static file, build and assign model
 !====================================================
 
+<?
+//Find the file name of the static file
+foreach($measurements as $m) {
+	if(strstr($m["Used"], "True") && strstr($m["Measurement_type"], "Static"))	{
+		$path_parts = pathinfo($m["Filename"]);
+		$static = $path_parts['filename'] . ".c3d";
+	}
+}
+?>
+
 Create_Hybrid_Model
-/FILE_NAME=<?=$working_directory;?>Static*.c3d
+/FILE_NAME=<?=$working_directory . $static;?> 
 ;
 
 Apply_Model_Template
