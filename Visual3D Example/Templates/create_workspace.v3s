@@ -1,0 +1,181 @@
+<?php
+include ($template_directory . 'template_xml.php');
+?> 
+
+File_New
+;
+
+! ==================================
+! Load files
+! ==================================
+
+<?
+// Load movement files and add tags.
+
+foreach($measurements as $m) {
+	if(strstr($m["Used"], "True") && !strstr($m["Measurement_type"], "Static"))	{
+		$path_parts = pathinfo($m["Filename"]);
+?>
+
+		File_Open 
+		/FILE_NAME=<?=$working_directory . $path_parts['filename'] . ".c3d";?> 
+		; 
+
+		Assign_Tags_To_Files
+		/MOTION_FILE_NAMES=<?=$working_directory . $path_parts['filename'] . ".c3d";?> 
+		! /QUERY=
+		/TAGS=<?=$m["Measurement_type"];?>
+		;
+
+		Assign_Tags_To_Files
+		/MOTION_FILE_NAMES=<?=$working_directory . $path_parts['filename'] . ".c3d";?> 
+		! /QUERY=
+		/TAGS=<?=$session['Test_condition'];?> 
+		;
+
+		Assign_Tags_To_Files
+		/MOTION_FILE_NAMES=<?=$working_directory . $path_parts['filename'] . ".c3d";?> 
+		! /QUERY=
+		/TAGS=<?=$m['Comments'];?> 
+		;
+
+<?
+	}
+}?> 
+
+!====================================================
+!Save frame rate so that it is available for other commands
+!====================================================
+
+Select_Active_File
+/FILE_NAME=Dynamic
+;
+
+Evaluate_Expression
+/EXPRESSION=PARAMETERS::POINT::RATE
+/RESULT_NAME=GLOBAL::FRAME_RATE
+! /RESULT_TYPE=DERIVED
+! /RESULT_FOLDER=PROCESSED
+;
+
+Select_Active_File
+/FILE_NAME=GLOBAL
+! /QUERY=
+;
+
+Set_Pipeline_Parameter_To_Data_Value
+/PARAMETER_NAME=FRAME_RATE
+/SIGNAL_TYPES=DERIVED
+/SIGNAL_NAMES=FRAME_RATE
+/SIGNAL_FOLDER=PROCESSED
+! /SIGNAL_COMPONENTS=ALL_COMPONENTS
+;
+
+!====================================================
+!Interpolate and Filter
+!====================================================
+! Maximum gap for interpolation is set to 1/10th of frame rate
+
+Evaluate_Expression
+/EXPRESSION=GLOBAL::DERIVED::PROCESSED::FRAME_RATE * 0.1
+/RESULT_NAME=GAP_WINDOW
+/RESULT_TYPE=DERIVED
+/RESULT_FOLDER=PROCESSED
+;
+
+Set_Pipeline_Parameter_To_Data_Value
+/PARAMETER_NAME=GAP
+/SIGNAL_TYPES=DERIVED
+/SIGNAL_NAMES=GAP_WINDOW
+/SIGNAL_FOLDER=PROCESSED
+! /SIGNAL_COMPONENTS=ALL_COMPONENTS
+;
+
+Select_Active_File
+/FILE_NAME=Dynamic
+;
+
+Interpolate
+/SIGNAL_TYPES=TARGET
+! /SIGNAL_NAMES=
+! /SIGNAL_FOLDER=ORIGINAL
+/MAXIMUM_GAP=::GAP
+! /NUM_FIT=3
+! /POLYNOMIAL_ORDER=3
+;
+
+Lowpass_Filter
+/SIGNAL_TYPES=TARGET
+! /SIGNAL_NAMES=
+/SIGNAL_FOLDER=PROCESSED
+! /RESULT_SUFFIX=
+! /RESULT_FOLDER=PROCESSED
+! /FILTER_CLASS=BUTTERWORTH
+/FREQUENCY_CUTOFF=20
+! /NUM_REFLECTED=6
+! /TOTAL_BUFFER_SIZE=6
+! /NUM_BIDIRECTIONAL_PASSES=1
+;
+
+!====================================================
+!Load static file, build and assign model
+!====================================================
+
+<?
+//Find the file name of the static file
+foreach($measurements as $m) {
+	if(strstr($m["Used"], "True") && strstr($m["Measurement_type"], "Static"))	{
+		$path_parts = pathinfo($m["Filename"]);
+		$static = $path_parts['filename'] . ".c3d";
+	}
+}
+?>
+
+Create_Hybrid_Model
+/FILE_NAME=<?=$working_directory . $static;?> 
+;
+
+Apply_Model_Template
+/FILE_NAME=<?=$template_directory;?>model.mdh
+/MODEL_NAME=<?=$working_directory;?>Static*.c3d
+;
+
+Set_Subject_Weight
+ /CALIBRATION_FILE=<?=$working_directory;?>Static*.c3d
+ /WEIGHT=<?=$session["Weight"]?> 
+;
+
+Set_Subject_Height
+ /CALIBRATION_FILE=<?=$working_directory;?>Static*.c3d
+ /HEIGHT=<?=$subject["Height"]?> 
+;
+
+Assign_Model_File
+/MODEL_NAME=<?=$working_directory;?>Static*.c3d
+/MOTION_FILE_NAMES=ALL_FILES
+;
+
+!====================================================
+!Save cmz
+!====================================================
+
+File_Save_As
+/FILE_NAME=<?=$working_directory . 'Report.cmz'; ?> 
+;
+
+!====================================================
+!Processing 
+!====================================================
+
+Call_Script
+/SCRIPT_FILE_NAME=<?=$template_directory . 'processing.v3s'; ?> 
+! /SCRIPT_PATH=
+;
+
+!====================================================
+!Save cmz
+!====================================================
+
+File_Save_As
+/FILE_NAME=<?=$working_directory . 'Report.cmz'; ?> 
+;

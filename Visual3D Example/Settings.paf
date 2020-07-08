@@ -23,7 +23,7 @@ Types:
       Measurements: [Static, Dynamic]
       Analyses: [Processing]
       Display order: [Session ID, Test condition, Operator, Comments]
-      Directory pattern: $Creation date$_$Session ID$_$Test condition$
+      Directory pattern: $Creation date$_$Test condition$
       PDF guide: ..\Documentation\Marker_Guide_Sports_Marker_Set.pdf
 
 Measurements:
@@ -48,7 +48,7 @@ Analyses:
     Program display name: Visual 3d
     Export session: Yes
     Export measurements: c3d
-    Arguments: [/s, $WorkingDirectory$example.v3s]
+    Arguments: [/s, $WorkingDirectory$create_workspace.v3s]
     Template files: ['*.v3s']
     Do not wait for Application: Yes
 
