@@ -4,5 +4,10 @@
 !====================================================
 
 Open_Report_Template
-/REPORT_TEMPLATE=::TEMPLATE_DIR&report.rgt
+/REPORT_TEMPLATE=report.rgt
 ;
+
+
+!====================================================
+! Add any custom processing steps below here
+!====================================================
