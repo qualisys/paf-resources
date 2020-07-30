@@ -135,6 +135,13 @@ Create_Hybrid_Model
 /FILE_NAME=<?=$working_directory . $static;?> 
 ;
 
+! Remove prefix 'Q_' if Skeleton solver Sports marker set is used.
+Remove_Prefix_From_Point_Labels
+/PREFIX=Q_
+! /INCLUDE_CAL_FILE=TRUE
+! /OVERWRITE_C3D_FILE=FALSE
+;
+
 Apply_Model_Template
 /FILE_NAME=<?=$template_directory;?>model.mdh
 /MODEL_NAME=<?=$working_directory;?>Static*.c3d
