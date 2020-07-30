@@ -35,12 +35,12 @@ Measurements:
   Static:
     Measurement length: 1
     Measurement type: Static
-    AIM models: Sports_Marker_Set.qam
+    AIM models: Sports_Static.qam
   Dynamic:
     Maximum count: 5
     Count: 3
     Measurement type: Dynamic
-    AIM models: Sports_Marker_Set.qam
+    AIM models: Sports_Dynamic.qam
 
 Analyses:
   Processing:
