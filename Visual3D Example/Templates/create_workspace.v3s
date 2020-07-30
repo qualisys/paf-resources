@@ -163,12 +163,71 @@ Assign_Model_File
 ;
 
 !====================================================
-!Save cmz
+!Make meta data available as Text_Items in V3D
 !====================================================
 
-File_Save_As
-/FILE_NAME=<?=$working_directory . 'Report.cmz'; ?> 
+Select_Active_File
+/FILE_NAME=GLOBAL
+! /QUERY=
 ;
+
+<?
+if (!empty($session["Name"])) {?> 
+	Set_Text_Item
+	/SIGNAL_NAME=Name
+	/SIGNAL_FOLDER=META
+	/SIGNAL_DATA_VALUE=<? echo $session['Name']; ?> 
+	;
+<?	} 
+
+if (!empty($subject["ID"])) {?> 
+	Set_Text_Item
+	/SIGNAL_NAME=ID
+	/SIGNAL_FOLDER=META
+	/SIGNAL_DATA_VALUE=<?=$subject["ID"]; ?> 
+	;
+<?	}
+
+if (!empty($subject["DOB"])) { ?> 
+	Set_Text_Item
+	/SIGNAL_NAME=DOB
+	/SIGNAL_FOLDER=META
+	/SIGNAL_DATA_VALUE=<?=$subject['DOB'];?> 
+	;
+<?	}
+
+if (!empty($session["Weight"])) {?> 
+	Set_Text_Item
+	/SIGNAL_NAME=Weight
+	/SIGNAL_FOLDER=META
+	/SIGNAL_DATA_VALUE=<?echo (number_format(round(trim($session["Weight"]),1),1).' kg');?> 
+	;
+<?	}
+	
+if (!empty($session["Comments"])) {?> 
+	Set_Text_Item
+	/SIGNAL_NAME=Comments
+	/SIGNAL_FOLDER=META
+	/SIGNAL_DATA_VALUE=<?=$session['Comments'];?> 
+	;
+<?	}
+
+if (!empty($session["Creation_date"])) {?> 
+	Set_Text_Item
+	/SIGNAL_NAME=Creation_date
+	/SIGNAL_FOLDER=META
+	/SIGNAL_DATA_VALUE=<? echo (trim($session["Creation_date"]));?> 
+	;
+<?	}
+
+if (!empty($session["Creation_time"])) {?> 
+	Set_Text_Item
+	/SIGNAL_NAME=Creation_time
+	/SIGNAL_FOLDER=META
+	/SIGNAL_DATA_VALUE=<? echo (trim($session["Creation_time"]));?> 
+	;
+<?	}
+?> 
 
 !====================================================
 !Processing 
