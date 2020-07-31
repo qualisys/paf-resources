@@ -622,7 +622,7 @@ HYBRID_SEGMENT
 /TYPE=Visual_3D
 /NAME=Virtual Lab
 /REFERENCE_OBJECT=Medial Distal+Lateral Distal+Medial Proximal+Lateral Proximal+Additional Object+Proximal Joint+Distal Joint+Additional Plane+Distal Radius+Proximal Radius
-/REFERENCE_OBJECT_NAMES=++++Lab orientation+Lab Origin+Lab Z+Posterior+VirtualLab_Distal_Radius+VirtualLab_Proximal_Radius
+/REFERENCE_OBJECT_NAMES=++++Lab orientation+Lab Origin+Lab Z+Lateral+VirtualLab_Distal_Radius+VirtualLab_Proximal_Radius
 /REFERENCE_OBJECT_TYPES=++++LANDMARK+LANDMARK+LANDMARK++METRIC+METRIC
 ! /USE_CAL_TARGETS_FOR_TRACKING=TRUE
 /TRACKING_TYPES=LANDMARK+LANDMARK+LANDMARK
