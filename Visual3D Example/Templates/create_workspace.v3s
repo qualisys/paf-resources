@@ -9,9 +9,9 @@ File_New
 ! Load files
 ! ==================================
 
-<?
-// Load movement files and add tags.
+! Load movement files and add tags.
 
+<?
 foreach($measurements as $m) {
 	if(strstr($m["Used"], "True") && !strstr($m["Measurement_type"], "Static"))	{
 		$path_parts = pathinfo($m["Filename"]);
@@ -248,6 +248,78 @@ Set_Default_Folders
 ! /DEFAULT_REPORT_TEMPLATE=
 ! /CMO_LIBRARY_PATH=
 ;
+
+!===========================================
+!Define virtual lab orientation based on pelvis orientation
+!===========================================
+
+! Add TARGET Lab orientation (used to set orientation of Virtual lab)
+! ==================================
+
+! A unit vector is defined between the right and left hip landmarks, then rounded to yield 4 possible solutions ( +/- X-axis and +/- y-axis)
+! A target is created that contains that unit_vector at every frame of data.
+! The virtual_lab will be tracked by the new TARGET.
+! Note this algorithm will NOT work properly if pelvis rotates along vertical axis during dynamic trials
+
+! Create a unit vector between left and right hips
+Evaluate_Expression
+/EXPRESSION=UNIT_VECTOR(
+	(LANDMARK::ORIGINAL::RIGHT_HIP::X - LANDMARK::ORIGINAL::LEFT_HIP::X), 
+	(LANDMARK::ORIGINAL::RIGHT_HIP::Y - LANDMARK::ORIGINAL::LEFT_HIP::Y), 
+	(LANDMARK::ORIGINAL::RIGHT_HIP::Z - LANDMARK::ORIGINAL::LEFT_HIP::Z)) 
+! /SIGNAL_TYPES= 
+! /SIGNAL_FOLDER=ORIGINAL 
+! /SIGNAL_NAMES= 
+/RESULT_TYPES=DERIVED 
+/RESULT_FOLDERS=VIRTUAL_LAB 
+/RESULT_NAME=HIP_VECTOR 
+! /APPLY_AS_SUFFIX_TO_SIGNAL_NAME=FALSE 
+; 
+
+! Compute the median value of the unit vector
+Metric_Median
+/RESULT_METRIC_FOLDER=VIRTUAL_LAB
+/RESULT_METRIC_NAME=_MED
+/APPLY_AS_SUFFIX_TO_SIGNAL_NAME=TRUE
+/SIGNAL_TYPES=DERIVED
+/SIGNAL_FOLDER=VIRTUAL_LAB
+/SIGNAL_NAMES=HIP_VECTOR
+/COMPONENT_SEQUENCE=ALL
+/EVENT_SEQUENCE=
+/EXCLUDE_EVENTS=
+/SEQUENCE_PERCENT_START=
+/SEQUENCE_PERCENT_END=
+/GENERATE_MEAN_AND_STDDEV=FALSE
+! /APPEND_TO_EXISTING_VALUES=FALSE
+;
+
+! Round the floats to an integer 
+Evaluate_Expression 
+/EXPRESSION=ROUND(METRIC::VIRTUAL_LAB::HIP_VECTOR_MED) 
+! /SIGNAL_TYPES= 
+! /SIGNAL_FOLDER=ORIGINAL 
+! /SIGNAL_NAMES= 
+/RESULT_TYPES=METRIC 
+/RESULT_FOLDERS=VIRTUAL_LAB 
+/RESULT_NAME=LAB_LATERAL 
+! /APPLY_AS_SUFFIX_TO_SIGNAL_NAME=FALSE 
+; 
+
+! Create a new TARGET that has the rounded unit vector at every frame. 
+Create_Target 
+/SIGNAL_NAMES=Lab orientation
+! /SIGNAL_DESCRIPTION= 
+/EXPRESSION=METRIC::VIRTUAL_LAB::LAB_LATERAL 
+; 
+
+Build_Model
+/CALIBRATION_FILE=<?=$working_directory;?>Static*.c3d
+! /REBUILD_ALL_MODELS=FALSE
+! /DISPLAY_RESULTS=TRUE
+;
+
+! End of virtual lab definition 
+! =========================================
 
 Call_Script
 /SCRIPT_FILE_NAME=<?=$template_directory . 'processing.v3s'; ?> 
