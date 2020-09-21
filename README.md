@@ -59,3 +59,19 @@ Example tested with Matlab 2017b.
 2. Set Project Options > Miscellaneous > Folder Options for "Visual 3d" to C:\Program Files\Visual3D\Visual3D.exe (adapt if Visual3D is installed at different location).
 
 Example tested with Visual3D 2020.05.1.
+
+### Theia
+
+#### Preparation
+
+1. Install Theia and accompanying engine.
+2. Set Project Options > Miscellaneous > Folder Options for "Theia" to C:\Program Files\Theia\Theia3D\Theia3D.exe (adapt if Theia is installed at different location)
+3. Install Visual3D
+4. Set Project Options > Miscellaneous > Folder Options for "Visual 3d" to C:\Program Files\Visual3D\Visual3D.exe (adapt if Visual3D is installed at different location)
+5. Download data from Qualiys File Library [link](https://qfl.qualisys.com/)
+6. Extract downloaded .zip file into the projects data folder "Theia Markerless Example\Data"
+
+Example tested with:
+ - QTM 2020.2 (build 5770)
+ - Visual3D 2020.05.1
+ - Theia 2020.3.0.961
