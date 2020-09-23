@@ -7,6 +7,8 @@ Open_Report_Template
 /REPORT_TEMPLATE=report.rgt
 ;
 
+Recalc
+;
 
 !====================================================
 ! Add any custom processing steps below here
