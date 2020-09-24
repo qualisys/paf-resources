@@ -59,3 +59,21 @@ Example tested with Matlab 2017b.
 2. Set Project Options > Miscellaneous > Folder Options for "Visual 3d" to C:\Program Files\Visual3D\Visual3D.exe (adapt if Visual3D is installed at different location).
 
 Example tested with Visual3D 2020.05.1.
+
+### Theia
+
+#### Preparation
+
+1. Install Theia and accompanying engine.
+2. Set Project Options > Miscellaneous > Folder Options for "Theia" to C:\Program Files\Theia\Theia3D\Theia3D.exe (adapt if Theia is installed at different location)
+3. Install Visual3D
+4. Set Project Options > Miscellaneous > Folder Options for "Visual 3d" to C:\Program Files\Visual3D\Visual3D.exe (adapt if Visual3D is installed at different location)
+5. Download data from Qualiys File Library [link](https://qfl.qualisys.com/#!/project/theiaexample)
+6. Extract downloaded .zip file into the projects data folder "Theia Markerless Example\Data"
+7. To process the data, you have to first click on Step 1 - Theia Processing and then click on Step 2 - Visual3D Analysis
+    - Note: For Theia's processing, you can change the following settings using Templates\settings.php: save workspace, filter cutoff frequency and filter type. When saving the workspace, it will create a TheiaFormatData_workspace folder in your session where each subfolder is containing the Theia workspace of a measurement. To open the workspace of a measurement, make sure that Theia is closed and double-click on the results.p3d file.
+
+Example tested with:
+ - QTM 2020.2 (build 5770)
+ - Visual3D 2020.05.1
+ - Theia 2020.3.0.961

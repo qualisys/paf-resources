@@ -1,0 +1,496 @@
+<?php
+include ($template_directory . 'template_xml.php');
+
+//Copy theia c3ds to $working_directory
+foreach($measurements as $m) {
+	if($m["Used"] === "True") {
+		$path_parts = pathinfo($m["Filename"]);
+		$foldername = $path_parts['filename'];
+		$files = glob($working_directory . 'TheiaFormatData\\' . $foldername . '\\pose_filt_*.c3d');
+		rsort($files); //use one with lowest number
+		$file_to_copy = array_pop($files);
+		$dest_name = $path_parts['filename'] . '_Theia.c3d';
+		copy($file_to_copy, $working_directory . $dest_name);
+	}
+}
+
+?> 
+
+File_New
+;
+
+! ==================================
+! Load movement trials, assign tag.
+! It is assumed that only files that should be included in the report were ticked in QTM.
+! ==================================
+
+Set_Pipeline_Parameter_To_List_Of_Files
+/PARAMETER_NAME=theia_files
+/FOLDER=<?=$working_directory;?> 
+! /SEARCH_SUBFOLDERS=FALSE
+/FILE_MASK=*_Theia.c3d
+! /ALPHABETIZE=TRUE
+! /RETURN_FOLDER_NAMES=FALSE
+;
+
+For_Each
+/ITERATION_PARAMETER_NAME=theia_file
+! /ITERATION_PARAMETER_COUNT_NAME=
+/ITEMS=::theia_files
+;
+
+	Set_Pipeline_Parameter
+	/PARAMETER_NAME=qtm_file
+	/PARAMETER_VALUE=::theia_file
+	/PARAMETER_VALUE_SEARCH_FOR=_Theia.c3d
+	/PARAMETER_VALUE_REPLACE_WITH=.c3d
+	! /PARAMETER_VALUE_PREFIX=
+	! /PARAMETER_VALUE_APPEND=
+	! /MULTI_PASS=FALSE
+	;
+
+	File_Open
+	/FILE_NAME=::qtm_file
+	;
+
+	File_Open
+	/FILE_NAME=::theia_file
+	;
+
+	Select_Active_File
+	/FILE_NAME=::qtm_file
+	! /QUERY=
+	;
+	
+	! Copy cropping metrics to Theia c3d because that one gets exported for web
+	Set_Pipeline_Parameter_To_Data_Value
+	/SIGNAL_TYPES=PARAMETERS
+	/SIGNAL_FOLDER=PROCESSING
+	/SIGNAL_NAMES=Cropped Measurement Start Frame
+	! /SIGNAL_COMPONENTS=ALL_COMPONENTS
+	/PARAMETER_NAME=Cropped Measurement Start Frame_qtm
+	;
+	
+	Set_Pipeline_Parameter_To_Data_Value
+	/SIGNAL_TYPES=PARAMETERS
+	/SIGNAL_FOLDER=PROCESSING
+	/SIGNAL_NAMES=Cropped Measurement End Frame
+	! /SIGNAL_COMPONENTS=ALL_COMPONENTS
+	/PARAMETER_NAME=Cropped Measurement End Frame_qtm
+	;
+		
+	Set_Pipeline_Parameter_To_Data_Value
+	/SIGNAL_TYPES=PARAMETERS
+	/SIGNAL_FOLDER=POINT
+	/SIGNAL_NAMES=RATE
+	! /SIGNAL_COMPONENTS=ALL_COMPONENTS
+	/PARAMETER_NAME=frame_rate_qtm
+	;
+		
+	File_Close
+	/FILE_NAME=::qtm_file
+	! /QUERY=
+	;
+
+	Select_Active_File
+	/FILE_NAME=::theia_file
+	! /QUERY=
+	;
+	
+	! import analog signals captured by QTM into Theia generated c3d
+	Import_Signals_From_C3D_File
+	/FILE_NAME=::theia_file
+	/IMPORT_FILE_NAME=::qtm_file
+	/REPLACE_EXISTING_SIGNALS=TRUE
+	! /SYNCH_OFFSET=
+	! /IMPORT_ANALOG_SYNCH=
+	! /IMPORT_ANALOG_THRESHOLD=0.0
+	! /IMPORT_ANALOG_ASCENDING=TRUE
+	! /ANALOG_RATE=
+	! /UPSAMPLE_TO_EXISTING_RATE=FALSE
+	! /INTERPOLATION_METHOD=CUBIC_SPLINE
+	! /IMPORT_AS_DERIVED=FALSE
+	! /DERIVED_FOLDER=EMG
+	/IMPORT_FORCE_PLATFORM_PARAMETERS=TRUE
+	;
+
+	Assign_Tags_To_Files
+	/MOTION_FILE_NAMES=ALL_FILES
+	! /QUERY=
+	/TAGS=<?=$m["Measurement_type"];?> 
+	;
+
+	Assign_Tags_To_Files
+	/MOTION_FILE_NAMES=ALL_FILES
+	! /QUERY=
+	/TAGS=<?=$session['Test_condition'];?> 
+	;
+
+	Assign_Tags_To_Files
+	/MOTION_FILE_NAMES=ALL_FILES
+	! /QUERY=
+	/TAGS=<?=$m['Comments'];?> 
+	;
+
+	Metric_Explicit
+	! /RESULT_METRIC_FOLDER=PROCESSED
+	/RESULT_METRIC_NAME=Uncropped Measurement Length
+	/METRIC_VALUE=PARAMETERS::POINT::FRAMES / PARAMETERS::POINT::RATE
+	;
+	
+	Metric_Explicit
+	! /RESULT_METRIC_FOLDER=PROCESSED
+	/RESULT_METRIC_NAME=Uncropped Measurement Frames
+	/METRIC_VALUE=PARAMETERS::POINT::FRAMES
+	;
+	
+	Metric_Explicit
+	! /RESULT_METRIC_FOLDER=PROCESSED
+	/RESULT_METRIC_NAME=Cropped Measurement Start Frame
+	/METRIC_VALUE=&::Cropped Measurement Start Frame_qtm& / (&::frame_rate_qtm& / PARAMETERS::POINT::RATE)
+	;
+	
+	Metric_Explicit
+	! /RESULT_METRIC_FOLDER=PROCESSED
+	/RESULT_METRIC_NAME=Cropped Measurement End Frame
+	/METRIC_VALUE=&::Cropped Measurement End Frame_qtm& / (&::frame_rate_qtm& / PARAMETERS::POINT::RATE)
+	;
+	
+End_For_Each
+/ITERATION_PARAMETER_NAME=theia_file
+;
+
+File_Rename
+! /EXISTING_FILE_NAME=ALL_FILES
+! /NEW_FILE_NAME=
+/USE_SEARCH_REPLACE=TRUE
+/SEARCH_FOR=_Theia.c3d
+/REPLACE_WITH=.c3d
+! /REMOVE_FILE_PATH=FALSE
+! /RENAME_STATIC_CALIBRATION_FILES=TRUE
+;
+
+!====================================================
+!Save frame rate so that it is available for other commands
+!====================================================
+
+Select_Active_File
+/FILE_NAME=Dynamic
+;
+
+Evaluate_Expression
+/EXPRESSION=PARAMETERS::POINT::RATE
+/RESULT_NAME=GLOBAL::FRAME_RATE
+! /RESULT_TYPE=DERIVED
+! /RESULT_FOLDER=PROCESSED
+;
+
+Select_Active_File
+/FILE_NAME=GLOBAL
+! /QUERY=
+;
+
+Set_Pipeline_Parameter_To_Data_Value
+/PARAMETER_NAME=FRAME_RATE
+/SIGNAL_TYPES=DERIVED
+/SIGNAL_NAMES=FRAME_RATE
+/SIGNAL_FOLDER=PROCESSED
+! /SIGNAL_COMPONENTS=ALL_COMPONENTS
+;
+
+!====================================================
+!Interpolate and Filter
+!====================================================
+! Maximum gap for interpolation is set to 1/10th of frame rate
+
+Evaluate_Expression
+/EXPRESSION=GLOBAL::DERIVED::PROCESSED::FRAME_RATE * 0.1
+/RESULT_NAME=GAP_WINDOW
+/RESULT_TYPE=DERIVED
+/RESULT_FOLDER=PROCESSED
+;
+
+Set_Pipeline_Parameter_To_Data_Value
+/PARAMETER_NAME=GAP
+/SIGNAL_TYPES=DERIVED
+/SIGNAL_NAMES=GAP_WINDOW
+/SIGNAL_FOLDER=PROCESSED
+! /SIGNAL_COMPONENTS=ALL_COMPONENTS
+;
+
+Select_Active_File
+/FILE_NAME=Dynamic
+;
+
+Interpolate
+/SIGNAL_TYPES=TARGET
+! /SIGNAL_NAMES=
+! /SIGNAL_FOLDER=ORIGINAL
+/MAXIMUM_GAP=::GAP
+! /NUM_FIT=3
+! /POLYNOMIAL_ORDER=3
+;
+
+Lowpass_Filter
+/SIGNAL_TYPES=TARGET
+! /SIGNAL_NAMES=
+/SIGNAL_FOLDER=PROCESSED
+! /RESULT_SUFFIX=
+! /RESULT_FOLDER=PROCESSED
+! /FILTER_CLASS=BUTTERWORTH
+/FREQUENCY_CUTOFF=20
+! /NUM_REFLECTED=6
+! /TOTAL_BUFFER_SIZE=6
+! /NUM_BIDIRECTIONAL_PASSES=1
+;
+
+! Remove prefix 'Q_' if Skeleton solver Sports marker set is used.
+Remove_Prefix_From_Point_Labels
+/PREFIX=Q_
+! /INCLUDE_CAL_FILE=TRUE
+! /OVERWRITE_C3D_FILE=FALSE
+;
+
+! ============================
+! Model udaptations
+! ============================
+Set_Subject_Weight
+/CALIBRATION_FILE=*Markerless*.c3d
+/WEIGHT=<?=$session["Weight"]?> 
+;
+
+Set_Subject_Height
+/CALIBRATION_FILE=*Markerless*.c3d
+/HEIGHT=<?=$subject["Height"]?> 
+;
+
+! Add virtual lab segment oriented based on pelvis
+Append_Model_Template
+/CALIBRATION_FILE=*Markerless*.c3d
+/MODEL_TEMPLATE=<?=$template_directory;?>append_model.mdh
+! /VIEW_BUILDMODEL_RESULTS=2
+;
+
+Assign_Model_File
+/MODEL_NAME=*Markerless*.c3d
+/MOTION_FILE_NAMES=ALL_FILES
+;
+
+!Make LTO amd RTO segment kinematic only
+Set_Segment_Properties
+/CALIBRATION_FILE=*Markerless*.c3d
+/SEGMENT_NAME=LTO
+/KINEMATIC_ONLY=TRUE
+! /MASS=
+! /CG_FROM_PROX_AXIAL=
+! /CG_FROM_PROX_ML=
+! /CG_FROM_PROX_AP=
+! /INERTIA_XX=
+! /INERTIA_YY=
+! /INERTIA_ZZ=
+! /AP_DIRECTION=
+! /AXIAL_DIRECTION=
+! /MODEL_FILE=
+! /MATERIAL_FILE=
+! /GRAPHICS_ROT_X=
+! /GRAPHICS_ROT_Y=
+! /GRAPHICS_ROT_Z=
+! /GRAPHICS_SCALE_X=
+! /GRAPHICS_SCALE_Y=
+! /GRAPHICS_SCALE_Z=
+! /GRAPHICS_TRANSLATE_X=
+! /GRAPHICS_TRANSLATE_Y=
+! /GRAPHICS_TRANSLATE_Z=
+;
+
+Set_Segment_Properties
+/CALIBRATION_FILE=*Markerless*.c3d
+/SEGMENT_NAME=RTO
+/KINEMATIC_ONLY=TRUE
+! /MASS=
+! /CG_FROM_PROX_AXIAL=
+! /CG_FROM_PROX_ML=
+! /CG_FROM_PROX_AP=
+! /INERTIA_XX=
+! /INERTIA_YY=
+! /INERTIA_ZZ=
+! /AP_DIRECTION=
+! /AXIAL_DIRECTION=
+! /MODEL_FILE=
+! /MATERIAL_FILE=
+! /GRAPHICS_ROT_X=
+! /GRAPHICS_ROT_Y=
+! /GRAPHICS_ROT_Z=
+! /GRAPHICS_SCALE_X=
+! /GRAPHICS_SCALE_Y=
+! /GRAPHICS_SCALE_Z=
+! /GRAPHICS_TRANSLATE_X=
+! /GRAPHICS_TRANSLATE_Y=
+! /GRAPHICS_TRANSLATE_Z=
+;
+
+!====================================================
+!Make meta data available as Text_Items in V3D
+!====================================================
+
+Select_Active_File
+/FILE_NAME=GLOBAL
+! /QUERY=
+;
+
+<?
+if (!empty($session["Name"])) {?> 
+	Set_Text_Item
+	/SIGNAL_NAME=Name
+	/SIGNAL_FOLDER=META
+	/SIGNAL_DATA_VALUE=<? echo $session['Name']; ?> 
+	;
+<?	} 
+
+if (!empty($subject["ID"])) {?> 
+	Set_Text_Item
+	/SIGNAL_NAME=ID
+	/SIGNAL_FOLDER=META
+	/SIGNAL_DATA_VALUE=<?=$subject["ID"]; ?> 
+	;
+<?	}
+
+if (!empty($subject["DOB"])) { ?> 
+	Set_Text_Item
+	/SIGNAL_NAME=DOB
+	/SIGNAL_FOLDER=META
+	/SIGNAL_DATA_VALUE=<?=$subject['DOB'];?> 
+	;
+<?	}
+
+if (!empty($session["Weight"])) {?> 
+	Set_Text_Item
+	/SIGNAL_NAME=Weight
+	/SIGNAL_FOLDER=META
+	/SIGNAL_DATA_VALUE=<?echo (number_format(round(trim($session["Weight"]),1),1).' kg');?> 
+	;
+<?	}
+	
+if (!empty($session["Comments"])) {?> 
+	Set_Text_Item
+	/SIGNAL_NAME=Comments
+	/SIGNAL_FOLDER=META
+	/SIGNAL_DATA_VALUE=<?=$session['Comments'];?> 
+	;
+<?	}
+
+if (!empty($session["Creation_date"])) {?> 
+	Set_Text_Item
+	/SIGNAL_NAME=Creation_date
+	/SIGNAL_FOLDER=META
+	/SIGNAL_DATA_VALUE=<? echo (trim($session["Creation_date"]));?> 
+	;
+<?	}
+
+if (!empty($session["Creation_time"])) {?> 
+	Set_Text_Item
+	/SIGNAL_NAME=Creation_time
+	/SIGNAL_FOLDER=META
+	/SIGNAL_DATA_VALUE=<? echo (trim($session["Creation_time"]));?> 
+	;
+<?	}
+?> 
+
+!====================================================
+!Processing 
+!====================================================
+
+Select_Active_File
+/FILE_NAME=ALL_FILES
+! /QUERY=
+;
+
+Set_Default_Folders
+! /PIPELINE=
+/REPORT_TEMPLATE=<?=$template_directory;?> 
+! /MODEL_TEMPLATE=
+! /MOTION_FILE=
+/DEFAULT_DATA=<?=$working_directory;?> 
+! /DEFAULT_MODEL_TEMPLATE=
+! /DEFAULT_REPORT_TEMPLATE=
+! /CMO_LIBRARY_PATH=
+;
+
+!===========================================
+!Define virtual lab orientation based on pelvis orientation
+!===========================================
+
+! Add TARGET Lab orientation (used to set orientation of Virtual lab)
+! ==================================
+
+! A unit vector is defined between the right and left hip landmarks, then rounded to yield 4 possible solutions ( +/- X-axis and +/- y-axis)
+! A target is created that contains that unit_vector at every frame of data.
+! The virtual_lab will be tracked by the new TARGET.
+! Note this algorithm will NOT work properly if pelvis rotates along vertical axis during dynamic trials
+
+! Create a unit vector between left and right hips
+Evaluate_Expression
+/EXPRESSION=UNIT_VECTOR(
+	(LANDMARK::ORIGINAL::RHIP::X - LANDMARK::ORIGINAL::LHIP::X), 
+	(LANDMARK::ORIGINAL::RHIP::Y - LANDMARK::ORIGINAL::LHIP::Y), 
+	(LANDMARK::ORIGINAL::RHIP::Z - LANDMARK::ORIGINAL::LHIP::Z)) 
+! /SIGNAL_TYPES= 
+! /SIGNAL_FOLDER=ORIGINAL 
+! /SIGNAL_NAMES= 
+/RESULT_TYPES=DERIVED 
+/RESULT_FOLDERS=VIRTUAL_LAB 
+/RESULT_NAME=HIP_VECTOR 
+! /APPLY_AS_SUFFIX_TO_SIGNAL_NAME=FALSE 
+; 
+
+! Compute the median value of the unit vector
+Metric_Median
+/RESULT_METRIC_FOLDER=VIRTUAL_LAB
+/RESULT_METRIC_NAME=_MED
+/APPLY_AS_SUFFIX_TO_SIGNAL_NAME=TRUE
+/SIGNAL_TYPES=DERIVED
+/SIGNAL_FOLDER=VIRTUAL_LAB
+/SIGNAL_NAMES=HIP_VECTOR
+/COMPONENT_SEQUENCE=ALL
+/EVENT_SEQUENCE=
+/EXCLUDE_EVENTS=
+/SEQUENCE_PERCENT_START=
+/SEQUENCE_PERCENT_END=
+/GENERATE_MEAN_AND_STDDEV=FALSE
+! /APPEND_TO_EXISTING_VALUES=FALSE
+;
+
+! Round the floats to an integer 
+Evaluate_Expression 
+/EXPRESSION=ROUND(METRIC::VIRTUAL_LAB::HIP_VECTOR_MED) 
+! /SIGNAL_TYPES= 
+! /SIGNAL_FOLDER=ORIGINAL 
+! /SIGNAL_NAMES= 
+/RESULT_TYPES=METRIC 
+/RESULT_FOLDERS=VIRTUAL_LAB 
+/RESULT_NAME=LAB_LATERAL 
+! /APPLY_AS_SUFFIX_TO_SIGNAL_NAME=FALSE 
+; 
+
+! Create a new TARGET that has the rounded unit vector at every frame. 
+Create_Target 
+/SIGNAL_NAMES=Lab orientation
+! /SIGNAL_DESCRIPTION= 
+/EXPRESSION=METRIC::VIRTUAL_LAB::LAB_LATERAL 
+; 
+
+! End of virtual lab definition 
+! =========================================
+
+Call_Script
+/SCRIPT_FILE_NAME=<?=$template_directory . 'processing.v3s'; ?> 
+! /SCRIPT_PATH=
+;
+
+!====================================================
+!Save cmz
+!====================================================
+
+File_Save_As
+/FILE_NAME=<?=$working_directory . 'Report.cmz'; ?> 
+;
