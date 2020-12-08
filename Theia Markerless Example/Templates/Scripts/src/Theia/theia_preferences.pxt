@@ -6,10 +6,13 @@
 	<GPU_THREAD_COUNT value="1" />
 	<ANALYSIS_START_FRAME value="-1" />
 	<ANALYSIS_END_FRAME value="-1" />
+	<FILT_FREQ value="5.0" />
 	<RUN_FILTER value="true" />
 	<CUTOFF_FREQ value="10" />
 	<POINTS_REFLECTED value="3" />
 	<BUFFER value="3" />
+	<DIST_THRESH_HANDS value="20" />
+	<PROB_THRESH_HANDS value="0.2" />
 	<ADD_IK_SKEL value="true" />
 	<ADD_CS value="true" />
 	<ADD_FLOOR value="true" />
@@ -17,6 +20,9 @@
 	<ADD_CS value="true" />
 	<ADD_FLOOR value="true" />
 	<B_USE_ADDUCTION_KNEE value="true" />
+	<B_USE_3DOF_KNEE value="false" />
+	<B_USE_FREE_ARMS value="false" />
+	<B_USE_FREE_FEET value="false" />
 	<B_RENDER_SMOOTH_IK value="true" />
 	<B_USE_SAVED_MODEL value="false" />
 	<CAL_MODE value="false" />
@@ -26,14 +32,13 @@
 	<FOOT_GROWTH value="120" />
 	<BOX_SAMPLE_SCALE value="1" />
 	<HEAD_DIST_THRESH value="30" />
-	<N_VIS_CAMS value="3" />
+	<N_VIS_CAMS value="2" />
 	<HIP_PERCENTAGE_THRESH value="60" />
 	<BOX_SKIP value="1" />
 	<PIXEL_SIZE value="0.00345" />
 	<SKIP_FRAMES_INT value="0" />
 	<MAX_FRAMES_INT value="2500" />
-	<SQUARE_HEIGHT value="20" />
-	<SQUARE_WIDTH value="20" />
+	<SQUARE_SIZE value="20" />
 	<N_SQUARES_WIDE value="9" />
 	<N_SQUARE_HIGH value="7" />
 	<VOL_MIN_X value="0" />
@@ -47,7 +52,8 @@
 	<F_IK_SMOOTH_VARIANCE value="0.001" />
 	<CUTOFF_FRACTION value="0.25" />
 	<GCVSPL_POSE_FILT value="true" />
-	<POSE_WEIGHT value="0.1" />
+	<POSE_WEIGHT value="0.05" />
 	<HEATMAP_CULL value="0.8" />
 	<SKELETON_ALPHA value="50" />
+	<LAPTOP value="false" />
 </preferences>
