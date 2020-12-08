@@ -252,7 +252,7 @@ Remove_Prefix_From_Point_Labels
 ;
 
 ! ============================
-! Model udaptations
+! Model adaptations
 ! ============================
 Set_Subject_Weight
 /CALIBRATION_FILE=*Markerless*.c3d
@@ -274,6 +274,12 @@ Append_Model_Template
 Assign_Model_File
 /MODEL_NAME=*Markerless*.c3d
 /MOTION_FILE_NAMES=ALL_FILES
+;
+
+Set_Segment_Auto_Assign_Force
+! /CALIBRATION_FILE=
+/SEGMENT_NAMES=RTO+LTO+RFT+LFT
+/USE_FOR_AUTO_ASSIGN=FALSE+FALSE+TRUE+TRUE
 ;
 
 !Make LTO amd RTO segment kinematic only
@@ -329,6 +335,31 @@ Set_Segment_Properties
 ! /GRAPHICS_TRANSLATE_Z=
 ;
 
+Set_Segment_Properties
+/CALIBRATION_FILE=*Markerless*.c3d
+/SEGMENT_NAME=RTX
+/KINEMATIC_ONLY=TRUE
+! /MASS=
+! /CG_FROM_PROX_AXIAL=
+! /CG_FROM_PROX_ML=
+! /CG_FROM_PROX_AP=
+! /INERTIA_XX=
+! /INERTIA_YY=
+! /INERTIA_ZZ=
+! /AP_DIRECTION=
+! /AXIAL_DIRECTION=
+! /MODEL_FILE=
+! /MATERIAL_FILE=
+! /GRAPHICS_ROT_X=
+! /GRAPHICS_ROT_Y=
+! /GRAPHICS_ROT_Z=
+! /GRAPHICS_SCALE_X=
+! /GRAPHICS_SCALE_Y=
+! /GRAPHICS_SCALE_Z=
+! /GRAPHICS_TRANSLATE_X=
+! /GRAPHICS_TRANSLATE_Y=
+! /GRAPHICS_TRANSLATE_Z=
+;
 !====================================================
 !Make meta data available as Text_Items in V3D
 !====================================================
