@@ -9,6 +9,15 @@ As of QTM version 2.17, the examples described in this document can be used with
 
 ## Creating a QTM project based on example project
 
+### Using examples from Github
+
+1. Download .zip or clone repository https://github.com/qualisys/paf-resources/
+2. Unzip files (if applicable).
+3. If applicable, replace Settings.qtmproj with project settings from another project where cameras and other hardware have already been set up.
+4. Open the project in QTM.
+
+### Using examples included with QTM installer
+
 1. In QTM, select File > New Project
 2. Tick the box "Use PAF module" and select the example you want to use.
 3. If applicable, import project settings from another project where cameras and other hardware have already been set up.
@@ -46,7 +55,7 @@ Example tested with Anaconda (for Python 2.7, 32bit), alternatively Python 2.7.1
 #### Preparation
 
 1. In QTM, in Project Options > Processing > MATLAB Export: activate "3D Data" export
-2. Set Project Options > Miscellaneous > Folder Options for "Matlab" to C:\Program Files\MATLAB\R2017b\bin\matlab.exe (adapt if a different version of Matlab is used).
+2. In QTM, set Project Options > Miscellaneous > Folder Options for "Matlab" to C:\Program Files\MATLAB\R2017b\bin\matlab.exe (adapt if a different version of Matlab is used).
 
 Example tested with Matlab 2017b.
 
@@ -56,7 +65,7 @@ Example tested with Matlab 2017b.
 #### Preparation
 
 1. Install Visual3D.
-2. Set Project Options > Miscellaneous > Folder Options for "Visual 3d" to C:\Program Files\Visual3D\Visual3D.exe (adapt if Visual3D is installed at different location).
+2. In QTM, set Project Options > Miscellaneous > Folder Options for "Visual 3d" to C:\Program Files\Visual3D\Visual3D.exe (adapt if Visual3D is installed at different location).
 
 Example tested with Visual3D 2020.05.1.
 
@@ -65,7 +74,7 @@ Example tested with Visual3D 2020.05.1.
 #### Preparation
 
 1. Install Theia and accompanying engine.
-2. Set Project Options > Miscellaneous > Folder Options for "Theia" to C:\Program Files\Theia\Theia3D\Theia3D.exe (adapt if Theia is installed at different location)
+2. In QTM, set Project Options > Miscellaneous > Folder Options for "Theia" to C:\Program Files\Theia\Theia3D\Theia3D.exe (adapt if Theia is installed at different location)
 3. Install Visual3D
 4. Set Project Options > Miscellaneous > Folder Options for "Visual 3d" to C:\Program Files\Visual3D\Visual3D.exe (adapt if Visual3D is installed at different location)
 5. Download data from Qualiys File Library [link](https://qfl.qualisys.com/#!/project/theiaexample)
@@ -74,6 +83,6 @@ Example tested with Visual3D 2020.05.1.
     - Note: For Theia's processing, you can change the following settings using Templates\settings.php: save workspace, filter cutoff frequency and filter type. When saving the workspace, it will create a TheiaFormatData_workspace folder in your session where each subfolder is containing the Theia workspace of a measurement. To open the workspace of a measurement, make sure that Theia is closed and double-click on the results.p3d file.
 
 Example tested with:
- - QTM 2020.2 (build 5770)
- - Visual3D 2020.05.1
- - Theia 2020.3.0.961
+ - QTM 2020.3 (build 6020)
+ - Visual3D 2020.11.2
+ - Theia 2020.5.970
