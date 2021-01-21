@@ -12,16 +12,12 @@ $settings_php_path  = '"' . $template_directory . 'settings.php' . '"' ;
 
 switch (trim($analysis_name)) {
 
-    case 'Prepare Session Folder':
-        $command_string = $command_string_base . ' --script prepare-videos-for-theia' .' --path-to-session-folder ' . $wrapped_working_dir;
-        break;
-
-    case 'Wait Until Theia Idle':
-        $command_string = $command_string_base . ' --script check-status' .' --path-to-batch-commands ' . $theia_batch_commands_dir;
-        break;
-
-    case 'Change Batch Commands and Preferences File':
-        $command_string = $command_string_base . ' --script modify-commands-preferences' .' --path-to-batch-commands ' . $theia_batch_commands_dir . ' --theia-data-dir ' . $theia_format_data_path . ' --settings-php-path ' . $settings_php_path ;
+    case 'Theia Tools Process':
+        $command_string = $command_string_base . ' --script process' . 
+        ' --path-to-session-folder ' . $wrapped_working_dir . 
+        ' --path-to-batch-commands ' . $theia_batch_commands_dir . 
+        ' --theia-data-dir ' . $theia_format_data_path . 
+        ' --settings-php-path ' . $settings_php_path;
         break;
     }
 

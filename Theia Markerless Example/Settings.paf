@@ -21,7 +21,7 @@ Types:
     Markerless Session:
       Fields: [Session ID, Test condition, Operator]
       Measurements: [Dynamic]
-      Analyses: [ Step 1 - Theia Processing, Step 2 - Visual3D Analysis]
+      Analyses: [Theia and V3D Processing]
       Display order: [Session ID, Test condition, Operator, Comments]
       Directory pattern: $Creation date$_Markerless
 
@@ -37,26 +37,20 @@ Measurements:
     Measurement type: Dynamic
 
 Analyses:
-  Step 1 - Theia Processing:
+  Theia and V3D Processing:
     Type: Compound
-    Components: [Internal Run Theia, Prepare Session Folder, Change Batch Commands and Preferences File, Wait Until Theia Idle]
+    Components: [Internal Run Theia, Theia Tools Process, Visual3D Analysis]
   Internal Run Theia:
     Type: External program
     Program display name: Theia
     Do not wait for Application: Yes
     Arguments: [-path, $TemplateDirectory$Scripts\src\Theia\theia_batch_commands.txt, -force-single-instance]
-  Prepare Session Folder:
+  Theia Tools Process:
     Type: Instantiate template
     Export session: Yes
     Template: Templates\Scripts\src\Theia\run_theia_tools.php
     Export measurements: [c3d,xml settings]
-  Change Batch Commands and Preferences File:
-    Type: Instantiate template
-    Template: Templates\Scripts\src\Theia\run_theia_tools.php
-  Wait Until Theia Idle:
-    Type: Instantiate template
-    Template: Templates\Scripts\src\Theia\run_theia_tools.php
-  Step 2 - Visual3D Analysis:
+  Visual3D Analysis:
     Type: External program
     Program display name: Visual 3d
     Export session: Yes
