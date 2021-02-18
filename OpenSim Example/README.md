@@ -6,7 +6,7 @@
 2. Install Python 3.7.x (64-bit) from https://www.python.org/downloads/ or install a Python distribution such as Anaconda (create a Python 3.7 environment).
 3. Follow these steps to connect Python with OpenSim: https://simtk-confluence.stanford.edu/display/OpenSim/Scripting+in+Python#ScriptinginPython-Windows
 
-## Processing files using this example
+## Converting files using QTM Project Automation Framework
 1. Open the project 'OpenSim Example' in QTM
 2. Use the Project view in QTM (Ctrl+R) to create a person and session
 3. Capture or import .qtm files
@@ -17,6 +17,11 @@
    3. Right-click and select Smooth trajectory (Butterworth)
    4. To change the filter frequency, open the Trajectory Editor and change the Cutoff Frequency before applying the filter
 3. Click Start Processing to run the Generate .trc and .mot Analysis.
+
+## Converting files from command line
+As an alternative to starting the conversion from QTM, you can start it from the command line using the file qtm2opensim.py (loacted in Templates folder):
+> python qtm2opensim.py --c3d_dir '[c3d file path]' --c3d_file '[c3d file name]'
+
 ## Using the exported files in OpenSim
 For detailed instructions or if you would like to use a different model, please refer to the OpenSim documentation.
 1. Start OpenSim

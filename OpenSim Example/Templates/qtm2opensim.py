@@ -16,8 +16,8 @@ import matplotlib.pyplot as plt
 from utils import create_opensim_storage, lowess_bell_shape_kern, mm_to_m, rotate_data_table
 
 parser = argparse.ArgumentParser()
-parser.add_argument('--c3d_dir', help="Path to c3d file")
-parser.add_argument('--c3d_file', help="C3d file name")
+parser.add_argument('--c3d_dir', required=True, help="Path to c3d file")
+parser.add_argument('--c3d_file', required=True, help="C3d file name")
 
 def convert_c3d(c3d_dir, c3d_file):
 
