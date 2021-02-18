@@ -1,0 +1,114 @@
+Project ID: Open PAF OpenSim Example
+Package Information:
+  Name: OpenSim Example
+  Version: 1.0.0
+  Required QTM version: 2.16.3600
+Root type: Subject
+Default fields: [Creation date, Creation time]
+
+Date format: Iso
+Date separator: Dash
+Filename filter: \.(pdf)$
+
+Types:
+  Subject:
+    Participant:
+      Fields: [ID, Name, Sex, DOB, Height, Weight]
+      Children: [Session]
+      Directory pattern: $Name$_$ID$
+
+  Session:
+    Session:
+      Fields: [Session ID, Operator]
+      Measurements: [Static, Dynamic]
+      Analyses: [Generate .trc and .mot]
+      Display order: [Session ID, Operator, Comments]
+      Directory pattern: $Creation date$_$Session ID$
+
+Measurements:
+  Fields:
+    Measurement length: 30
+    Minimum count: 1
+    Maximum count: 1
+    Count: 1
+  Static:
+    Measurement length: 1
+    Measurement type: Static
+    AIM models: Static.qam
+  Dynamic:
+    Maximum count: 5
+    Count: 3
+    Measurement type: Dynamic
+    AIM models: Dynamic.qam
+
+Analyses:
+  Generate .trc and .mot:
+    Type: Instantiate template
+    Export session: Yes
+    Export measurements: c3d
+    Template: Templates\RunProcessing.php
+    Output file: log.txt
+
+Fields:
+  ID:
+    Type: String
+    Inherit: Connect
+  Name:
+    Type: String
+    Inherit: Connect
+    Force: Yes
+  DOB:
+    Type: Date
+    Inherit: Connect
+  Creation date:
+    Type: Date
+    Readonly: Yes
+  Creation time:
+    Type: TimeOfDay
+    Readonly: Yes
+  Session ID:
+    Type: String
+    Inherit: Connect
+  Operator:
+    Type: String
+    Inherit: Copy
+  Height:
+    Type: Float
+    Quantity: Length
+    Unit: centimeters
+    Decimals: 0
+    Inherit: Connect
+    Max: 250
+    Min: 50
+  Weight:
+    Type: Float
+    Quantity: Mass
+    Unit: kilograms
+    Decimals: 1
+    Inherit: Copy
+    Max: 250
+    Min: 0
+  Sex:
+    Type: Enum
+    Values: [Female, Male, Other]
+    Inherit: Connect
+  Measurement type:
+    Type: String
+
+Columns:
+  Default column definitions:
+    ID:
+      Width: 200
+      Fields:
+        Default: Filename
+        Participant: ID
+    Name:
+      Width: 150
+      Fields: 
+        Participant: Name
+    Created:
+      Width: 65
+      Field: Creation date
+    Comments:
+      Field: Comments
+      Width: 100
