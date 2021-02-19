@@ -9,7 +9,7 @@ import opensim
 import numpy as np
 import pandas as pd
 from scipy import linalg
-import matplotlib.pyplot as plt
+# import matplotlib.pyplot as plt # include this when generating plots to verify force filter
 
 def rotate_data_table(table, axis, deg):
     """Rotate OpenSim::TimeSeriesTableVec3 entries using an axis and angle.

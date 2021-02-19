@@ -12,7 +12,7 @@ import os
 import argparse
 import opensim as osim
 import numpy as np
-import matplotlib.pyplot as plt
+# import matplotlib.pyplot as plt # include this when generating plots to verify force zeroing
 from utils import create_opensim_storage, lowess_bell_shape_kern, mm_to_m, rotate_data_table
 
 parser = argparse.ArgumentParser()
