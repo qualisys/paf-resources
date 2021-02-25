@@ -76,6 +76,14 @@ For detailed instructions or if you would like to use a different model, please 
       2. Adjust weights as desired
       3. Click Run
    4. Select Tools -> Inverse Dynamics
-      1.  Refer to OpenSim documentation for detailed instructions on how to assign forces to the left/right foot: https://simtk-confluence.stanford.edu/display/OpenSim/How+to+Use+the+Inverse+Dynamics+Tool
+      1. In the *Main settings* tab, select *Loaded Motion* and choose *IKResults*. Check the *Filter coordinates* box and enter a cutoff frequency for your kinematic data
+      2. In the *External Loads* tab, click on the edit icon to open the External Forces window
+      3. Load the .mot file in *Force data file*
+      4. Click on *Add...* and enter a name for the right foot force assignment, ie "Right", and select *calcn_r* in the list of segments next to *Applied to*. Check *Applies Force* (*Point Force*) and *Applies Torque*. In the various drop downs, select the components of the correct force plate that is in contact with the right foot. Click on *OK*
+      5. Replicate the previous step for the left foot force assignment (use *calcn_l*)
+      6. Click on *Save* to save your external forces setup
+      7. Save your Inverse Dynamics Tool setup (optional) and click on Run
+      8. You can now plot results of your Inverse Dynamics procedure by going to Tools -> Plot. Click on *Y-Quantity* and *Load File* to select the inverse_dynamics.sto output file automatically created at the previous step. Select the signals you want to plot and click *OK*. Click on *X_Quantity* and select *Time*. Finally click on your figure in the *Curves List* and then click on *Add* to see the curve in the graph
+      9. For more details please refer to the OpenSim documentation, for example https://simtk-confluence.stanford.edu/display/OpenSim/How+to+Use+the+Inverse+Dynamics+Tool and https://simtk-confluence.stanford.edu/display/OpenSim/Tutorial+3+-+Scaling%2C+Inverse+Kinematics%2C+and+Inverse+Dynamics
 
 
