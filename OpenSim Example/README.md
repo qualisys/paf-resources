@@ -1,35 +1,39 @@
 # Preparing Qualisys data for OpenSim processing
 ## Preparation
-1. Install OpenSim 4.1 or later from https://simtk.org/frs/index.php?group_id=91 :
+1. Install OpenSim 4.2 or later from https://simtk.org/frs/index.php?group_id=91 :
    1. Create an account on SimTK, download and install OpenSim. 
-   *Note: if you have force data from Type-3 force plates (Kistler) you need to use OpenSim 4.2. Scroll down on SimTK dowload page for beta version.*
+   *Note: OpenSim versions before 4.2 did not support importing data from Type-3 force plates (Kistler) from c3d files exported from Qualisys Track Manager.*
 2. Install Python 3.7.9 (64-bit) from https://www.python.org/ftp/python/3.7.9/python-3.7.9-amd64.exe.
    1. Select the option to Add Python 3.7 to PATH and click "Install Now" in the first installation step.
    2. Verify Python installation by starting a Windows Command prompt and entering:
-      > python --version
+      ````
+      python --version
+      ````
       This should return "Python 3.7.9". If not, verify that your Python installation folder is listed in Windows Environment variables -> Path
    3. Install Python packages Start a Windows command prompt and run:
-      > pip install numpy
-      > pip install pandas
-      > pip install scipy
-      > pip install matplotlib
+      ````
+      pip install numpy
+      pip install pandas
+      pip install scipy
+      pip install matplotlib
+      ````
       Matplotlib is optional, only required if you want to generate graphs to verify force data processing.
    4. Close Windows Command Prompt.
 3. Connect Python with OpenSim
    1. Insert OpenSim into the System Path:
-      1. Click the Windows Star icon and type "env". Click "Edit the system environment variables".
-      2. Click Envrionment Variables" button at the bottom.
+      1. Click the Windows Start icon and type "env". Click "Edit the system environment variables".
+      2. Click "Envrionment Variables" button at the bottom.
       3. In "System Variables", locate "Path" and click Edit.
-      4. Click New and add "c:\\*OpenSim installation folder*\bin", for example: "C:\OpenSim 4.1\bin"
+      4. Click New and add "c:\\*OpenSim installation folder*\bin", for example: "C:\OpenSim 4.2\bin"
       5. Delete any other OpenSim Path entries.
    2. Run OpenSim setup file from command line:
       1. Open a new Windows Command Prompt
       2. Navigate to the OpenSim installation folder and locate the subfolder sdk\Python:
-         >cd C:\OpenSim 4.1\sdk\Python
+         `cd C:\OpenSim 4.2\sdk\Python`
       3. Run the setup script:
-         >python setup.py install
+         `python setup.py install`
       4. Test the installation by typing:
-         >python -c "import opensim"
+         `python -c "import opensim"` 
          If there is no error, the installation was successful.
    Further information and other options can be found here: https://simtk-confluence.stanford.edu/display/OpenSim/Scripting+in+Python#ScriptinginPython-SettingupyourPythonscriptingenvironment (expand the section "Installing Anaconda and the "opensim" Python package")
 4. Re-start QTM in case it is open
