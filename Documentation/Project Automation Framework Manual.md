@@ -1,7 +1,7 @@
 # Project Automation Framework
 Documentation  
 Version: 3.0.0  
-QTM version: 2018.1  
+QTM version: 2021.2  
 Publication date: April 08, 2021
 
 # Table of Contents
@@ -46,7 +46,7 @@ Publication date: April 08, 2021
 ## Purpose and application of PAF
 The purpose of the Project Automation Framework (PAF) is to streamline the  process from initial capture to final report. This saves time and ensures that data is collected in processed in a consistent way. The typical application is shown in the following figure. When Visual3D is used for all biomechanical calculations, it still maintains flexibility as events, models, report templates or any other component of the analysis can be modified within Visual3D when needed.
 
-![workflow](\assets\images\Workflow.png)
+![Workflow picture](\assets\images\Workflow.png)
 
 Qualisys provides various modules, for example for gait analysis or different sports. These are ready-to-use analysis packages, for more information see www.qualisys.com > Software > Project automation framework. If you are interested in one the packages or want to buy a license, please contact <sales@qualisys.com>.
 
@@ -64,7 +64,7 @@ The basic folder structure of a PAF project is similar to a standard QTM project
 | Data | Folder | Required: QTM will save all data that is collected through the PAF interface here. |
 | Messages | Folder | Identical to standard QTM project. |
 | Settings | Folder | Optional: if the project definitions, contains references to settings files, these must be placed here. |
-| Templates | Folder | Required[^2]: all files that are required to analyse the measure data is stored in this folder, e.g. scripts and report templates |
+| Templates | Folder | Required: [^2] all files that are required to analyse the measure data is stored in this folder, e.g. scripts and report templates |
 | Settings.paf | File  | Required: this is the core of the PAF project as it contains the definition of the data collection structure, analyses, etc. |
 | Settings.qtmproj | File | Identical to standard QTM project, contains all camera and software settings.|  
 
@@ -73,7 +73,7 @@ The basic folder structure of a PAF project is similar to a standard QTM project
 ## Preparation steps
 It is recommended to set up windows to show file extensions as some files can have the same name, but different extensions. This is done in Folder Options in Windows Explorer:
 
-![folder_options](\assets\images\Folder_options.png)
+![Folder options](\assets\images\Folder_options.png)
 
 Further, a text editor such as [Notepad++](http://notepad-plus-plus.org/) is required to edit the settings files and scripts.
 
@@ -85,8 +85,8 @@ The settings.paf is the core of the PAF project. When loading a project, QTM wil
 
 Note that the QTM reads in the settings.paf when loading the project. This means that QTM needs to be re-started and the project re-loaded for changes to the file to take effect.
 If present, the settings.paf file controls the behavior of the QTM Project View. It serves two main purposes:
-1. defining what types of objects will be present in the project and
-2. what metadata they will contain as well as defining the session and analysis wizard operation.
+1. Defines what types of objects will be present in the project
+2. Defines what metadata they will contain as well as defining the session and analysis wizard operation.
 
 ## YAML
 The PAF file is written and parsed according in the yaml standard. The parser used adheres to most of version 1.2 of the standard, which is documented at http://www.yaml.org. The relevant parts for understanding the PAF file are yaml sequences and maps. Sequences are most commonly entered as comma separated lists of elements:  
@@ -109,7 +109,7 @@ There are other ways of encoding both sequences and maps, for examples look at t
 
 Most parts of the PAF file are case sensitive.
 
-![folder_structure](\assets\images\Folder_structure.png)
+![Folder structure](\assets\images\Folder_structure.png)
 
 Knowledge about the project type system is essential to understanding QTM project operation. QTM reads type definitions from the PAF file. These definitions can then be instantiated to PAF items. Each PAF item (except measurements) corresponds to a folder in the PAF folder hierarchy. The item data are stored in a file called data.qpr in each item folder. Measurement metadata are stored in a special compartment of the measurement (.qtm) files. The PAF items are organized in a tree structure corresponding to the directory structure in the data folder. This tree structure can also be seen in the Project view.
 
@@ -261,7 +261,7 @@ The template instantiation is done in the following way:
     - **$type_guids** contains an array with GUIDs of the analysis hierarchy. Can be used in conjunction with the the REST api (> QTM 2.14).
     - **$measurement_guids** contains an array with GUIDs of the measurements that are part of the analysis. Can be used in conjunction with the the REST api (> QTM 2.14).
 - The template_xml.php file puts the session data in the following global variables:
-    - **$subject and $session** are both associative arrays from the field name to the value of the field. Both keys and values are stored as strings.
+    - **\$subject** and **\$session** are both associative arrays from the field name to the value of the field. Both keys and values are stored as strings.
     - **$measurements** is an array containing all the measurements of the session. Each element in this array is in turn an array much like the subject and session arrays.
 >The template_xml.php can be edited and extended, for example to parse information from …_settings.xml files that are exported together with the c3d files and contain (for example) information on analog channels.
 >
@@ -435,6 +435,8 @@ For measurements, these fields are also available (and the default values of som
 - **Display fields dialog after creation**: If this value is set to true, the fields dialog will be displayed when a measurement has finished to allow the user to edit the fields of the measurement item in the same way that dialog is displayed when other (non-measurement) items are created.
 
 ## Online processing
+(Available from QTM 2021.2 onwards.)
+
 In order to support demands for online processing (e.g. adding user defined analyses and fields), the entire Settings.paf is downloaded before configuring the PAF pane. When Settings.paf contains `Source:url` the latest Settings.paf will automatically be download from Report Center.
 
 After entering valid credentials Settings.paf will be downloaded.
@@ -465,7 +467,7 @@ This copy of the project should contain the settings.paf file and all other fold
 
 After adding the project to the Packages folder, the option to use a PAF packages will appear when starting QTM:
 
-![New_project](\assets\images\New_project.png)
+![New project](\assets\images\New_project.png)
 
 # Preparing Visual3D scripts for PAF
 As described in the previous section, PAF gives QTM the ability to pre-process Visual3D pipelines by evaluating PHP code with the script template. The script template needs to be set up so that the resulting Visual3D pipeline script includes only valid Visual3D pipeline commands. The pipeline language is developed and maintained by C-Motion. It provides the user with control over almost the complete functionality of Visual3D. Documentation is provided by C-Motion: http://www.c-motion.com/v3dwiki/index.php?title=Visual3D_Documentation.  
@@ -598,14 +600,14 @@ Full documentation of PHP is available at http://php.net. Some useful commands a
 | Structuring the script	|Include statements are useful to split up a long script into different parts: ```include(‘name of file to include’)```	|
 
 To check whether measurement is static or dynamic:
-1. Add to Fields section in settings.paf:
+1. Add to Fields section in Settings.paf:
 ```
     Measurement type:
     Type: Enum 
     Values: [Static, Dynamic] 
     Default: Dynamic
 ```
-2. Set the value in the Measurement section in settings.paf:
+2. Set the value in the Measurement section in Settings.paf:
 ```
     Measurements:
     Static trial:
@@ -618,7 +620,7 @@ To check whether measurement is static or dynamic:
 
 # Tutorial: creating a PAF package
 1. Define static and dynamic marker set
-2. Define the structure that will be used when collecting data [^1]: Person, Session, Measurement details.
+2. Define the structure that will be used when collecting data: [^1]Person, Session, Measurement details.
 3. Acquire test files (with or without PAF)
 4. Define model in Visual3D and save as .mdh pipeline
 5. Prepare a pipeline to automate the processing [^1].
