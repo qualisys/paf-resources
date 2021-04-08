@@ -28,8 +28,6 @@ Publication date: April 08, 2021
     - [Columns](#columns)
   - [Default fields added by QTM](#default-fields-added-by-qtm)
   - [Online processing](#online-processing)
-    - [QualisysAuthentication application](#qualisysauthentication-application)
-    - [Log in/ log out](#log-in-log-out)
 - [Making a package available in QTM](#making-a-package-available-in-qtm)
 - [Preparing Visual3D scripts for PAF](#preparing-visual3d-scripts-for-paf)
   - [Editing Pipeline scripts](#editing-pipeline-scripts)
@@ -449,16 +447,6 @@ Package Information:
   Required QTM version: 2021.2.7000
   Source: https://report.qualisys.com/api/v2/qtm-project/
 ```
-### QualisysAuthentication application
-When downloading Settings.paf, QualisysAuthentication application will start and request QTM user credentials. If webview2 runtime isn't installed it will be automatically installed first time QualisysAuthentication application is started.
-
-QualisysAuthentication stores access_token information in `%appdata%\Qualisys\qualisys.token` that QTM and separate analysis steps can use to extract access_token for passing on to online processing. When user is working with an online project the access_token is periodically refreshed once every hour. QualisysAuthentication and dependencies are installed together with QTM.
-
-### Log in/ log out
-To log in/out while QTM is running use menu > Help and click Login or Logout: [your email].
-
-
-
 # Making a package available in QTM
 If it is desired to add the customized project to the New Project dialog in QTM, a copy of the project is placed in the Packages folder within the QTM program folder (usually `C:\Program Files (x86)\Qualisys\Qualisys Track
 Manager\Packages\`).
