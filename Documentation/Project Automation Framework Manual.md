@@ -27,6 +27,9 @@ Publication date: April 08, 2021
     - [Fields](#fields)
     - [Columns](#columns)
   - [Default fields added by QTM](#default-fields-added-by-qtm)
+  - [Online processing](#online-processing)
+    - [QualisysAuthentication application](#qualisysauthentication-application)
+    - [Log in/ log out](#log-in-log-out)
 - [Making a package available in QTM](#making-a-package-available-in-qtm)
 - [Preparing Visual3D scripts for PAF](#preparing-visual3d-scripts-for-paf)
   - [Editing Pipeline scripts](#editing-pipeline-scripts)
@@ -207,8 +210,7 @@ This analysis runs an arbitrary external program supplying a command line define
 It has the following properties:
 -  **Program display name**: Required. The name to be displayed in the directories tab in project options where the user will have to locate the external executable. NB: Because this path varies between computers rather than between projects, it is not stored in the project, but in computer-global settings file. Several analyses in different projects may share the same Program display name and QTM will automatically use the same executable path for all of them.
 - **Export session**: Optional. If present, the metadata of the session, all its ancestors and the measurements are exported into a file called session.xml.
-- **Export measurements**: Optional. A single string or an array containing any combination of the following values: “TSV”, “C3D”, “MAT”. Will make QTM export all the selected measurements to the corresponding formats before running the external program. Use “xml settings” to export a file with measurement settings (e.g. capture start time and analog channel names). The file will be named [file
-name].settings.xml.
+- **Export measurements**: Optional. A single string or an array containing any combination of the following values: `TSV`, `C3D`, `MAT`, `json`. Will make QTM export all the selected measurements to the corresponding formats before running the external program. Use “xml settings” to export a file with measurement settings (e.g. capture start time and analog channel names). The file will be named [filename].settings.xml. Json will be created with current  project json export settings.
 - **Template files**: Optional. A single string or an array containing names of files in the template directory. Each file will be run through the PHP engine and the result written to a file with the same name in the session directory. Standard Windows wildcards are supported, but note that if the asterisk is used to match a part of the filename, the pattern must be enclosed in single quotation marks to make sure it is not parsed as a YAML alias.
 - **Working directory**: Optional. The working directory set when the program is launched. Defaults to the session directory.
 - **Arguments**: Optional. An array of arguments to be sent to the program being started. Each argument will be subject to pattern expansion and if the result contains spaces, it will be enclosed in double quotation marks when the command line is built.
@@ -282,6 +284,7 @@ This analysis will instantiate a single PHP template and put the result in the w
 properties:
 - **Template:** Required. The name of the input file. If this name contains any path delimiter tokens, it will be considered to be relative to the project directory, otherwise QTM will assume that the input file is placed in the templates folder.
 - **Output file**: Optional name of the output file. The output file is always put in the current working directory. If this option is not supplied, the name of the template file will be used. If the template file name ends with the .php extension, it will be remove from output filename.
+- **Arguments**: Optional. An array of arguments to be sent to the program being started. Each argument will be subject to pattern expansion and if the result contains spaces, it will be enclosed in double quotation marks when the command line is built.
 
 ### Fields
 The fields section specifies all the fields that can be added to a type definition. There are also a number of field specifications hardcoded into QTM that are always added to the types. For a complete list, see the Default fields section.
@@ -431,6 +434,29 @@ For measurements, these fields are also available (and the default values of som
 - **AIM models**: A semicolon separated list (not a YAML sequence) of AIM models that should be applied to measurements of this kind.
 - **Display fields dialog after creation**: If this value is set to true, the fields dialog will be displayed when a measurement has finished to allow the user to edit the fields of the measurement item in the same way that dialog is displayed when other (non-measurement) items are created.
 
+## Online processing
+In order to support demands for online processing (e.g. adding user defined analyses and fields), the entire Settings.paf is downloaded before configuring the PAF pane. When Settings.paf contains `Source:url` the latest Settings.paf will automatically be download from Report Center.
+
+After entering valid credentials Settings.paf will be downloaded.
+
+```
+Project ID: Core
+Package Information:
+  Name: Core Calqulus
+  Version: 1.0.0
+  Required QTM version: 2021.2.7000
+  Source: https://report.qualisys.com/api/v2/qtm-project/
+```
+### QualisysAuthentication application
+When downloading Settings.paf, QualisysAuthentication application will start and request QTM user credentials. If webview2 runtime isn't installed it will be automatically installed first time QualisysAuthentication application is started.
+
+QualisysAuthentication stores access_token information in `%appdata%\Qualisys\qualisys.token` that QTM and separate analysis steps can use to extract access_token for passing on to online processing. When user is working with an online project the access_token is periodically refreshed once every hour. QualisysAuthentication and dependencies are installed together with QTM.
+
+### Log in/ log out
+To log in/out while QTM is running use menu > Help and click Login or Logout: [your email].
+
+
+
 # Making a package available in QTM
 If it is desired to add the customized project to the New Project dialog in QTM, a copy of the project is placed in the Packages folder within the QTM program folder (usually `C:\Program Files (x86)\Qualisys\Qualisys Track
 Manager\Packages\`).
@@ -442,7 +468,7 @@ After adding the project to the Packages folder, the option to use a PAF package
 ![New_project](\assets\images\New_project.png)
 
 # Preparing Visual3D scripts for PAF
-As described in the previous section, PAF gives QTM the ability to pre-process Visual3D pipelines by evaluating PHP code with the script template. The script template needs to be set up so that the resulting Visual3D pipeline script includes only valid Visual3D pipeline commands. The pipeline language is developed and maintained by CMotion. It provides the user with control over almost the complete functionality of Visual3D. Documentation is provided by C-Motion: http://www.c-motion.com/v3dwiki/index.php?title=Visual3D_Documentation.  
+As described in the previous section, PAF gives QTM the ability to pre-process Visual3D pipelines by evaluating PHP code with the script template. The script template needs to be set up so that the resulting Visual3D pipeline script includes only valid Visual3D pipeline commands. The pipeline language is developed and maintained by C-Motion. It provides the user with control over almost the complete functionality of Visual3D. Documentation is provided by C-Motion: http://www.c-motion.com/v3dwiki/index.php?title=Visual3D_Documentation.  
 
 QTM instantiates this script when the user starts an analysis by clicking the Analysis button and the associated analysis type is Visual3D. At this point, QTM processes any PHP code contained within the script template and saves an instantiated copy of the script in the session folder. Visual3D is started and will process this pipeline. The instantiated version of the pipeline will remain in the session folder and is available for documentation, debugging or testing. 
 
