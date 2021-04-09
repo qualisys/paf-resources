@@ -43,7 +43,7 @@ Publication date: April 08, 2021
 ## Purpose and application of PAF
 The purpose of the Project Automation Framework (PAF) is to streamline the  process from initial capture to final report. This saves time and ensures that data is collected in processed in a consistent way. The typical application is shown in the following figure. When Visual3D is used for all biomechanical calculations, it still maintains flexibility as events, models, report templates or any other component of the analysis can be modified within Visual3D when needed.
 
-![workflow](\assets\images\Workflow.png)
+![workflow](\\assets\\images\\Workflow.png)
 
 Qualisys provides various modules, for example for gait analysis or different sports. These are ready-to-use analysis packages, for more information see www.qualisys.com > Software > Project automation framework. If you are interested in one the packages or want to buy a license, please contact <sales@qualisys.com>.
 
@@ -70,7 +70,7 @@ The basic folder structure of a PAF project is similar to a standard QTM project
 ## Preparation steps
 It is recommended to set up windows to show file extensions as some files can have the same name, but different extensions. This is done in Folder Options in Windows Explorer:
 
-![folder_options](\assets\images\Folder_options.png)
+![folder_options](\\assets\\images\\Folder_options.png)
 
 Further, a text editor such as [Notepad++](http://notepad-plus-plus.org/) is required to edit the settings files and scripts.
 
@@ -78,7 +78,7 @@ Further, a text editor such as [Notepad++](http://notepad-plus-plus.org/) is req
 ## Purpose
 The settings.paf is the core of the PAF project. When loading a project, QTM will detect the presence of the settings.paf file when loading the project, read its contents and adapt the Project view accordingly. If the Project view is not shown, select View > Project view (Ctrl + R).
 
-![Pane](\assets\images\Pane.png)
+![Pane](\\assets\\images\\Pane.png)
 
 Note that the QTM reads in the settings.paf when loading the project. This means that QTM needs to be re-started and the project re-loaded for changes to the file to take effect.
 If present, the settings.paf file controls the behavior of the QTM Project View. It serves two main purposes:
@@ -106,7 +106,7 @@ There are other ways of encoding both sequences and maps, for examples look at t
 
 Most parts of the PAF file are case sensitive.
 
-![folder_structure](\assets\images\Folder_structure.png)
+![folder_structure](\\assets\\images\\Folder_structure.png)
 
 Knowledge about the project type system is essential to understanding QTM project operation. QTM reads type definitions from the PAF file. These definitions can then be instantiated to PAF items. Each PAF item (except measurements) corresponds to a folder in the PAF folder hierarchy. The item data are stored in a file called data.qpr in each item folder. Measurement metadata are stored in a special compartment of the measurement (.qtm) files. The PAF items are organized in a tree structure corresponding to the directory structure in the data folder. This tree structure can also be seen in the Project view.
 
@@ -439,7 +439,7 @@ This copy of the project should contain the settings.paf file and all other fold
 
 After adding the project to the Packages folder, the option to use a PAF packages will appear when starting QTM:
 
-![New_project](\assets\images\New_project.png)
+![New_project](\\assets\\images\\New_project.png)
 
 # Preparing Visual3D scripts for PAF
 As described in the previous section, PAF gives QTM the ability to pre-process Visual3D pipelines by evaluating PHP code with the script template. The script template needs to be set up so that the resulting Visual3D pipeline script includes only valid Visual3D pipeline commands. The pipeline language is developed and maintained by CMotion. It provides the user with control over almost the complete functionality of Visual3D. Documentation is provided by C-Motion: http://www.c-motion.com/v3dwiki/index.php?title=Visual3D_Documentation.  
