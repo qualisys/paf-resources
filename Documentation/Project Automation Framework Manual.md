@@ -23,6 +23,7 @@ Publication date: April 08, 2021
       - [External program](#external-program)
       - [Visual3D analysis](#visual3d-analysis)
       - [Report analysis](#report-analysis)
+      - [Compound](#compound)
       - [Instantiate template](#instantiate-template)
     - [Fields](#fields)
     - [Columns](#columns)
@@ -275,9 +276,18 @@ The template instantiation is done in the following way:
 The report analysis runs the external ReportGenerator program located in the templates directory passing three command line arguments: Working directory, template directory and template file name. It has the following properties:
 - **Word template**: Required. The file name of the word template located in the templates directory.
 
+#### Compound
+This analysis combines several other analyses into consecutive steps. By default subsequent analysis is started after previous one has finished unless **Do not wait for Visual3D** or **Do not wait for Application** property is set. It has the following properties:
+- **Compound**: Required. An array of analysis steps.
+- **Prerequisites**: Optional. See above.
+
+```
+  Analysis and Export:
+    Type: Compound
+    Components: [Processing, Export]
+```
+
 #### Instantiate template
->Note: this analysis type requires the "Project Automation Framework" developer license.
->
 This analysis will instantiate a single PHP template and put the result in the working directory. It has the following
 properties:
 - **Template:** Required. The name of the input file. If this name contains any path delimiter tokens, it will be considered to be relative to the project directory, otherwise QTM will assume that the input file is placed in the templates folder.
