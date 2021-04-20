@@ -1,59 +1,88 @@
 <?xml version='1.0' encoding='utf-8'?>
 <preferences>
-	<BATCH_SIZE value="8" />
-	<PATH value="C:/" />
-	<PLAYBACK value="1" />
-	<GPU_THREAD_COUNT value="1" />
-	<ANALYSIS_START_FRAME value="-1" />
-	<ANALYSIS_END_FRAME value="-1" />
-	<FILT_FREQ value="5.0" />
-	<RUN_FILTER value="true" />
-	<CUTOFF_FREQ value="10" />
-	<POINTS_REFLECTED value="3" />
-	<BUFFER value="3" />
-	<DIST_THRESH_HANDS value="20" />
-	<PROB_THRESH_HANDS value="0.2" />
-	<ADD_IK_SKEL value="true" />
-	<ADD_CS value="true" />
-	<ADD_FLOOR value="true" />
-	<ADD_IK_SKEL value="true" />
-	<ADD_CS value="true" />
-	<ADD_FLOOR value="true" />
-	<B_USE_ADDUCTION_KNEE value="true" />
-	<B_USE_3DOF_KNEE value="false" />
-	<B_USE_FREE_ARMS value="false" />
-	<B_USE_FREE_FEET value="false" />
-	<B_RENDER_SMOOTH_IK value="true" />
-	<B_USE_SAVED_MODEL value="false" />
-	<CAL_MODE value="false" />
-	<SCALE value="1" />
-	<BOX_PROB value="0.2" />
-	<PERCENTAGE_GROWTH value="100" />
-	<FOOT_GROWTH value="120" />
-	<BOX_SAMPLE_SCALE value="1" />
-	<HEAD_DIST_THRESH value="30" />
-	<N_VIS_CAMS value="2" />
-	<HIP_PERCENTAGE_THRESH value="60" />
-	<BOX_SKIP value="1" />
-	<PIXEL_SIZE value="0.00345" />
-	<SKIP_FRAMES_INT value="0" />
-	<MAX_FRAMES_INT value="2500" />
-	<SQUARE_SIZE value="20" />
-	<N_SQUARES_WIDE value="9" />
-	<N_SQUARE_HIGH value="7" />
-	<VOL_MIN_X value="0" />
-	<VOL_MIN_Y value="0" />
-	<VOL_MIN_Z value="-3" />
-	<VOL_MAX_X value="2" />
-	<VOL_MAX_Y value="0" />
-	<VOL_MAX_Z value="0" />
-	<CB_FRAMES_SEC value="4" />
-	<STR_SAVED_MODEL value="" />
-	<F_IK_SMOOTH_VARIANCE value="0.001" />
-	<CUTOFF_FRACTION value="0.25" />
-	<GCVSPL_POSE_FILT value="true" />
-	<POSE_WEIGHT value="0.05" />
-	<HEATMAP_CULL value="0.8" />
-	<SKELETON_ALPHA value="50" />
-	<LAPTOP value="false" />
+	<MAX_PEOPLE value="-1" type="int" />
+	<SKIP_FRAMES_INT value="0" type="string" />
+	<DRAW_IMAGES value="TRUE" type="string" />
+	<BUFFER value="3" type="string" />
+	<POSE_WEIGHT value="0.05" type="double" />
+	<USE_MANUAL_ID value="FALSE" type="string" />
+	<GPU_THREAD_COUNT value="1" type="string" />
+	<PATH value="C:/Users/labbuser/Documents/Projects" type="string" />
+	<DIST_THRESH_FEET value="100" type="double" />
+	<CAL_MODE value="false" type="bool" />
+	<REM_BAD_PROBS value="true" type="bool" />
+	<B_USE_ANIMATION_MODEL value="false" type="bool" />
+	<B_USE_SAVED_MODEL value="FALSE" type="string" />
+	<USE_STATIC_BOX value="FALSE" type="string" />
+	<ADD_IK_SKEL value="true" type="bool" />
+	<RUN_FILTER value="TRUE" type="string" />
+	<VOL_MIN_X value="0" type="double" />
+	<B_USE_FAST_BOX value="false" type="bool" />
+	<HEATMAP_CULL value="0.8" type="double" />
+	<BOX_PROB value="0.2" type="double" />
+	<B_RENDER_SMOOTH_IK value="true" type="bool" />
+	<BOX_SAMPLE_SCALE value="1" type="string" />
+	<CUTOFF_FRACTION value="0.25" type="double" />
+	<DIST_THRESH value="100" type="double" />
+	<PIXEL_SIZE value="0.00345" type="double" />
+	<ADD_RECT value="true" type="bool" />
+	<HALF_RES value="false" type="bool" />
+	<ANALYSIS_END_FRAME value="-1" type="string" />
+	<TINY value="FALSE" type="string" />
+	<B_USE_ADDUCTION_KNEE value="TRUE" type="string" />
+	<REM_BAD_DIST value="true" type="bool" />
+	<USE_LIGHT value="TRUE" type="string" />
+	<ADD_FLOOR value="TRUE" type="string" />
+	<HEAD_DIST_THRESH value="30" type="double" />
+	<GCVSPL_POSE_FILT value="true" type="string" />
+	<DIST_THRESH_HANDS value="20" type="double" />
+	<B_USE_3DOF_KNEE value="FALSE" type="string" />
+	<STR_SAVED_MODEL value="" type="string" />
+	<FRAME_BREAK value="0" type="string" />
+	<ADD_CS value="true" type="bool" />
+	<FOOT_GROWTH value="120" type="double" />
+	<PROB_THRESH_HANDS value="0.2" type="double" />
+	<ADD_MAXES value="TRUE" type="string" />
+	<B_USE_FREE_ARMS value="FALSE" type="string" />
+	<ADD_IK_LINES value="FALSE" type="string" />
+	<B_USE_JITTER value="false" type="bool" />
+	<PLAYBACK value="1" type="string" />
+	<SCALE value="1" type="double" />
+	<USE_FAST_BOX value="FALSE" type="string" />
+	<MAX_FRAMES_INT value="2500" type="string" />
+	<VOL_MIN_Y value="0" type="double" />
+	<N_VIS_CAMS value="2" type="string" />
+	<N_SQUARES_WIDE value="9" type="string" />
+	<ADD_2D_LINES value="false" type="bool" />
+	<SKIP_DOUBLE value="FALSE" type="string" />
+	<THRESH_PROB_3D value="0.4" type="double" />
+	<BOX_SKIP value="1" type="string" />
+	<THRESH_PROB_FEET value="0.25" type="double" />
+	<POINTS_REFLECTED value="3" type="string" />
+	<MIN_CAMS value="3" type="string" />
+	<HIP_PERCENTAGE_THRESH value="60" type="double" />
+	<ANALYSIS_START_FRAME value="-1" type="string" />
+	<THRESH_PROB value="0.4" type="double" />
+	<CUTOFF_FREQ value="10" type="double" />
+	<F_IK_SMOOTH_VARIANCE value="0.001" type="double" />
+	<ADD_DISTORTION_GRID value="FALSE" type="string" />
+	<ADD_JOINTS value="false" type="bool" />
+	<USE_GAUSS value="false" type="bool" />
+	<VOL_MIN_Z value="-3" type="double" />
+	<FILT_FREQ value="8.0" type="double" />
+	<B_USE_FREE_FEET value="FALSE" type="string" />
+	<VOL_MAX_Y value="0" type="double" />
+	<LAPTOP value="FALSE" type="string" />
+	<VOL_MAX_X value="2" type="double" />
+	<N_NUM_JITTER_FRAMES value="8" type="int" />
+	<N_SQUARE_HIGH value="7" type="string" />
+	<CB_FRAMES_SEC value="4" type="string" />
+	<BATCH_SIZE value="8" type="int" />
+	<B_SHOW_NECK_LOW_BACK value="true" type="bool" />
+	<VOL_MAX_Z value="0" type="double" />
+	<SKELETON_ALPHA value="50" type="int" />
+	<SQUARE_SIZE value="20" type="string" />
+	<PERCENTAGE_GROWTH value="100" type="double" />
+	<ADD_3D_LINES value="false" type="bool" />
+	<USE_CAM_VOL value="TRUE" type="string" />
 </preferences>

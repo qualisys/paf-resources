@@ -1,9 +1,9 @@
-STATE::RUN
-DIR::C:\TheiaFormatData
+STATE::IDLE
+DIR::C:\Users\labbuser\Downloads\paf-resources\Theia Markerless Example\Data\Test_001\2021-04-20_Markerless\TheiaFormatData
 WORKSPACE::FALSE
 RUNANALYSIS::TRUE
 SAVEINFERENCE::FALSE
 SAVEVIDEO::FALSE
 SAVEPOSE::TRUE
 SAVEWORK::FALSE
-PREF_PATH::C:\theia_preferences.pxt
+PREF_PATH::C:\Users\labbuser\Downloads\paf-resources\Theia Markerless Example\Templates\Scripts\src\Theia\theia_preferences.pxt
