@@ -1,0 +1,100 @@
+!-----------------------------
+!First merge theia c3d and analog c3d
+!-----------------------------
+<?
+include ($template_directory . 'merge_theia_and_analog.v3s');
+include ($template_directory . 'markerless_model_calculations.v3s');
+?> 
+
+! Remove markerless static trial  to clean up the workspace
+File_Close
+/FILE_NAME=Static*.c3d
+! /QUERY=
+;
+
+! Assign tag to markerless trials
+Assign_Tags_To_Files
+/MOTION_FILE_NAMES=ALL_FILES
+! /QUERY=
+/TAGS=markerless
+;
+
+!-----------------------------
+! Now apply model on marker-based trials
+!-----------------------------
+<?
+foreach($measurements as $m) {
+	if(strstr($m["Used"], "True") and strstr($m["Measurement_type"], "Dynamic")) {
+		$path_parts = pathinfo($m["Filename"]);
+?> 
+		File_Open
+		/FILE_NAME=<?=$working_directory . $path_parts['filename'] . ".c3d";?> 
+		/SUFFIX=_MB
+		! /SET_PROMPT=File_Open
+		! /FILTER=
+		! /ON_FILE_NOT_FOUND=PROMPT
+		;
+<?
+	}
+	elseif(strstr($m["Used"], "True") and strstr($m["Measurement_type"], "Static")) {
+		$path_parts = pathinfo($m["Filename"]);
+		$markerbased_static_file = $working_directory . $path_parts['filename'] . ".c3d";
+	}
+}
+?> 
+
+! Assign tag to marker-based trials
+Assign_Tags_To_Files
+/MOTION_FILE_NAMES=*.c3d
+/QUERY=NOT(markerless)
+/TAGS=marker-based
+;
+
+! Apply model
+Create_Hybrid_Model
+/CALIBRATION_FILE=<?=$markerbased_static_file;?> 
+! /SUFFIX=_
+! /RANGE=ALL_FRAMES
+! /SET_PROMPT=Open standing file
+;
+
+Assign_Model_File
+/CALIBRATION_FILE=<?=$markerbased_static_file;?>
+/MOTION_FILE_NAMES=marker-based
+! /REMOVE_EXISTING_ASSIGNMENTS=FALSE
+;
+
+! Demo data uses sports marker set. Change .mdh file is other marker set is used
+Apply_Model_Template
+/CALIBRATION_FILE=<?=$markerbased_static_file;?>
+/MODEL_TEMPLATE=<?=$template_directory;?>Full_body_Sports_Marker_Set.mdh
+! /SET_PROMPT=Open model file
+! /VIEW_BUILDMODEL_RESULTS=2
+! /MISSING_TARGET_MESSAGE=FALSE
+;
+
+Set_Subject_Weight
+/CALIBRATION_FILE=*Static*.c3d
+/WEIGHT=<?=$session["Weight"]?> 
+;
+
+Set_Subject_Height
+/CALIBRATION_FILE=*Static*.c3d
+/HEIGHT=<?=$subject["Height"]?> 
+;
+
+<?
+include ($template_directory . 'add_meta_data_to_report.v3s');
+include ($template_directory . 'define_virtual_lab.v3s');
+?> 
+
+
+Call_Script
+/SCRIPT_FILE_NAME=<?=$template_directory . 'processing_comparison.v3s'; ?> 
+! /SCRIPT_PATH=
+;
+
+!Save comparison cmz
+File_Save_As
+/FILE_NAME=<?=$working_directory . 'Report_comparison.cmz'; ?> 
+;

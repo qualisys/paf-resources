@@ -1,0 +1,87 @@
+!====================================================
+!Processing 
+!====================================================
+
+Select_Active_File
+/FILE_NAME=ALL_FILES
+! /QUERY=
+;
+
+Set_Default_Folders
+! /PIPELINE=
+/REPORT_TEMPLATE=<?=$template_directory;?> 
+! /MODEL_TEMPLATE=
+! /MOTION_FILE=
+/DEFAULT_DATA=<?=$working_directory;?> 
+! /DEFAULT_MODEL_TEMPLATE=
+! /DEFAULT_REPORT_TEMPLATE=
+! /CMO_LIBRARY_PATH=
+;
+
+!===========================================
+!Define virtual lab orientation based on pelvis orientation
+!===========================================
+
+! Add TARGET Lab orientation (used to set orientation of Virtual lab)
+! ==================================
+
+! A unit vector is defined between the right and left hip landmarks, then rounded to yield 4 possible solutions ( +/- X-axis and +/- y-axis)
+! A target is created that contains that unit_vector at every frame of data.
+! The virtual_lab will be tracked by the new TARGET.
+
+! Note this algorithm will NOT work properly if pelvis rotates along vertical axis during dynamic trials
+! Note LHIP and RHIP landmarks must exist to aply this algorithm.
+
+! Create a unit vector between left and right hips
+Evaluate_Expression
+/EXPRESSION=UNIT_VECTOR(
+	(LANDMARK::ORIGINAL::RHIP::X - LANDMARK::ORIGINAL::LHIP::X), 
+	(LANDMARK::ORIGINAL::RHIP::Y - LANDMARK::ORIGINAL::LHIP::Y), 
+	(LANDMARK::ORIGINAL::RHIP::Z - LANDMARK::ORIGINAL::LHIP::Z)) 
+! /SIGNAL_TYPES= 
+! /SIGNAL_FOLDER=ORIGINAL 
+! /SIGNAL_NAMES= 
+/RESULT_TYPES=DERIVED 
+/RESULT_FOLDERS=VIRTUAL_LAB 
+/RESULT_NAME=HIP_VECTOR 
+! /APPLY_AS_SUFFIX_TO_SIGNAL_NAME=FALSE 
+; 
+
+! Compute the median value of the unit vector
+Metric_Median
+/RESULT_METRIC_FOLDER=VIRTUAL_LAB
+/RESULT_METRIC_NAME=_MED
+/APPLY_AS_SUFFIX_TO_SIGNAL_NAME=TRUE
+/SIGNAL_TYPES=DERIVED
+/SIGNAL_FOLDER=VIRTUAL_LAB
+/SIGNAL_NAMES=HIP_VECTOR
+/COMPONENT_SEQUENCE=ALL
+/EVENT_SEQUENCE=
+/EXCLUDE_EVENTS=
+/SEQUENCE_PERCENT_START=
+/SEQUENCE_PERCENT_END=
+/GENERATE_MEAN_AND_STDDEV=FALSE
+! /APPEND_TO_EXISTING_VALUES=FALSE
+;
+
+! Round the floats to an integer 
+Evaluate_Expression 
+/EXPRESSION=ROUND(METRIC::VIRTUAL_LAB::HIP_VECTOR_MED) 
+! /SIGNAL_TYPES= 
+! /SIGNAL_FOLDER=ORIGINAL 
+! /SIGNAL_NAMES= 
+/RESULT_TYPES=METRIC 
+/RESULT_FOLDERS=VIRTUAL_LAB 
+/RESULT_NAME=LAB_LATERAL 
+! /APPLY_AS_SUFFIX_TO_SIGNAL_NAME=FALSE 
+; 
+
+! Create a new TARGET that has the rounded unit vector at every frame. 
+Create_Target 
+/SIGNAL_NAMES=Lab orientation
+! /SIGNAL_DESCRIPTION= 
+/EXPRESSION=METRIC::VIRTUAL_LAB::LAB_LATERAL 
+; 
+
+! End of virtual lab definition 
+! =========================================

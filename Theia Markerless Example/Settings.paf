@@ -8,7 +8,7 @@ Default fields: [Creation date, Creation time]
 
 Date format: Iso
 Date separator: Dash
-Filename filter: \.(pdf|r3w|cmo|docx)$
+Filename filter: \.(pdf|cmo|cmz|docx)$
 
 Types:
   Subject:
@@ -24,6 +24,12 @@ Types:
       Analyses: [Theia and V3D Processing]
       Display order: [Session ID, Test condition, Operator, Comments]
       Directory pattern: $Creation date$_Markerless
+    Marker-based vs Markerless Comparison Session:
+      Fields: [Session ID, Test condition, Operator]
+      Measurements: [Static, Dynamic]
+      Analyses: [Theia and V3D Comparison Processing]
+      Display order: [Session ID, Test condition, Operator, Comments]
+      Directory pattern: $Creation date$_Markerless_Comparison
 
 Measurements:
   Fields:
@@ -31,6 +37,10 @@ Measurements:
     Minimum count: 1
     Maximum count: 1
     Count: 1
+  Static:
+    Maximum count: 1
+    Count: 1
+    Measurement type: Static
   Dynamic:
     Maximum count: 5
     Count: 3
@@ -40,6 +50,9 @@ Analyses:
   Theia and V3D Processing:
     Type: Compound
     Components: [Internal Run Theia, Theia Tools Process, Visual3D Analysis]
+  Theia and V3D Comparison Processing:
+    Type: Compound
+    Components: [Internal Run Theia, Theia Tools Process, Visual3D Comparison]
   Internal Run Theia:
     Type: External program
     Program display name: Theia
@@ -56,6 +69,14 @@ Analyses:
     Export session: Yes
     Export measurements: c3d
     Arguments: [/s, $WorkingDirectory$create_workspace.v3s]
+    Template files: ['*.v3s']
+    Do not wait for Application: Yes
+  Visual3D Comparison:
+    Type: External program
+    Program display name: Visual 3d
+    Export session: Yes
+    Export measurements: c3d
+    Arguments: [/s, $WorkingDirectory$compare.v3s]
     Template files: ['*.v3s']
     Do not wait for Application: Yes
 
