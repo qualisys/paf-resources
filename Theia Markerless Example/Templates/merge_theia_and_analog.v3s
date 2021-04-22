@@ -93,6 +93,31 @@ foreach($measurements as $m) {
 		/PARAMETER_NAME=frame_rate_qtm
 		;
 			
+		!Make copy of all manually entered events ad store them in GLOBAL
+		Set_Pipeline_Parameter_To_List_Of_Signal_Names
+		/PARAMETER_NAME=ev
+		/SIGNAL_TYPES=EVENT_LABEL
+		/SIGNAL_FOLDER=ORIGINAL
+		;
+
+		For_Each
+		/ITERATION_PARAMETER_NAME=ev_name
+		! /ITERATION_PARAMETER_COUNT_NAME=
+		/ITEMS=::ev
+		;
+
+			Evaluate_Expression
+			/EXPRESSION=EVENT_LABEL::ORIGINAL::&::ev_name&
+			/RESULT_TYPES=METRIC
+			/RESULT_FOLDERS=EVENTS
+			/RESULT_NAME=GLOBAL::&::ev_name&
+			! /APPLY_AS_SUFFIX_TO_SIGNAL_NAME=FALSE
+			;
+
+		End_For_Each
+		/ITERATION_PARAMETER_NAME=ev_name
+		;
+
 		File_Close
 		/FILE_NAME=::qtm_file
 		! /QUERY=
@@ -161,6 +186,42 @@ foreach($measurements as $m) {
 		/RESULT_METRIC_NAME=Cropped Measurement End Frame
 		/METRIC_VALUE=&::Cropped Measurement End Frame_qtm& / (&::frame_rate_qtm& / PARAMETERS::POINT::RATE)
 		;
+		
+		!Copy all manually entered events to active trial
+		Select_Active_File
+		/FILE_NAME=GLOBAL
+		! /QUERY=
+		;
+
+		Set_Pipeline_Parameter_To_List_Of_Signal_Names
+		/PARAMETER_NAME=ev
+		/SIGNAL_TYPES=METRIC
+		/SIGNAL_FOLDER=EVENTS
+		;
+
+		Select_Active_File
+		/FILE_NAME=::theia_file
+		! /QUERY=
+		;
+
+		For_Each
+		/ITERATION_PARAMETER_NAME=ev_name
+		! /ITERATION_PARAMETER_COUNT_NAME=
+		/ITEMS=::ev
+		;
+
+			Evaluate_Expression
+			/EXPRESSION=GLOBAL::METRIC::EVENTS::&::ev_name
+			/RESULT_TYPES=EVENT_LABEL
+			/RESULT_FOLDERS=ORIGINAL
+			/RESULT_NAME=::ev_name
+			! /APPLY_AS_SUFFIX_TO_SIGNAL_NAME=FALSE
+			;
+
+		End_For_Each
+		/ITERATION_PARAMETER_NAME=ev_name
+		;
+
 <?
 		$i++;
 	}
