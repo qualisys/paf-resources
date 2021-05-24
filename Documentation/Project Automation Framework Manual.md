@@ -296,6 +296,8 @@ properties:
 ### Fields
 The fields section specifies all the fields that can be added to a type definition. There are also a number of field specifications hardcoded into QTM that are always added to the types. For a complete list, see the Default fields section.
 
+Maximum allowed field name length is 40 characters. Under certain curcumstances QTM can add a suffix to the field name, so limit the name to 36 letters.
+
 The fields section is a map from a field name to the properties of the field. The properties common to all field definitions are:
 - **Type**: Must be present. Defines the type of the field. Possible values are Integer, Float, String, Date, TimeOfDay, Enum or Boolean.
 - **Hidden**: If the value is Yes or True, this field will not be displayed in the GUI (and thus will not be editable by the user) but will be exported to files. It will keep its default value.
