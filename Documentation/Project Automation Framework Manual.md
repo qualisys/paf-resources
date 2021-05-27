@@ -196,8 +196,8 @@ Analyses:
         …
 ```
 Each analysis definition is a map that has some properties common to all analysis types and some that are unique to certain types:
-- **Type**: Names the analysis type. Valid values are External program, Visual3D, Report, Compound, HTTPRequest, Instantiate template. For more information on analysis types, see section below. 
->Note: only External program is available to all users. Other types require the Project Automation Framework developer license which is used for internal Qualisys development and by development partners.
+- **Type**: Names of the analysis type. Valid values are External program, Visual3D, Report, Compound, HTTPRequest, Instantiate template, Create skeleton, Solve skeleton. For more information on analysis types, see section below. 
+>Note: only External program and Compound are available to all users. Other types require the Project Automation Framework developer license which is used for internal Qualisys development and by development partners.
 >
 - **Prerequisites**: A sequence of measurement type names and analysis names that has to be completed before this analysis can be run. Measurement types are considered complete for the current session when the user has made at least the number of measurements given by that measurement type’s Minimum count field. Analyses are considered complete when the file denoted by the Output file field exists.
 - **Output file**: The name of a file that is created when this analysis is run. QTM uses this to check if the analysis has been completed. It is also used to issue a warning if this file has been changed since the analysis was last run for the current session. This property can contain patterns.
@@ -292,6 +292,41 @@ This analysis will instantiate a single PHP template and put the result in the w
 properties:
 - **Template:** Required. The name of the input file. If this name contains any path delimiter tokens, it will be considered to be relative to the project directory, otherwise QTM will assume that the input file is placed in the templates folder.
 - **Output file**: Optional name of the output file. The output file is always put in the current working directory. If this option is not supplied, the name of the template file will be used. If the template file name ends with the .php extension, it will be remove from output filename.
+
+#### Create skeleton (Introduced in QTM 2021.2)
+This analysis creates skeletons for the specified file provided that the correct marker names and prefixes are used (see the marker set guides in QTM > Skeleton for more information). It has the followng properties:
+- **Calibration measurement:** Required. A string to specifiy the file name to create the skeletons. Wildcard can be used in the name to avoid specifying the whole name. If multiple files are detected, the first measurement that matches the specified file name will be used.  Only measurements that are marked as used in the PAF pane will be affected.
+- **Frame:** Optional. An integer to specify the frame number that is used to create the skeletons. If not used, the default value is the frame located in the middle of the selected range.
+
+#### Solve skeleton (Introduced in QTM 2021.2)
+This analysis solves skeletons for the specified files provided that the skeletons already exist  and that the correct marker names and prefixes are used (see the marker set guides in QTM > Skeleton for more information). It has the following properties:
+- **Measurements:** Required. A string or list of strings to specifiy the file names to solve the skeletons. Wildcard can be used in the name to specify multiple files at once. To specify all measurements, simply use the wildcard character.  Only measurements that are marked as used in the PAF pane will be affected.
+- **Exclude:** Optional. A string or list of strings to specifiy the file names to exclude. Wildcard can be used in the name to specify multiple files at once.  Only measurements that are marked as used in the PAF pane will be affected.
+
+Example 1:
+```
+  Create skeletons:   
+    Type: Create skeleton
+    Calibration measurement: 'Static*'
+    Frame: 10
+  Solve skeletons:
+    Type: Solve skeleton
+    Measurements: '*' 
+    Exclude: ['Static*', 'Bike*']
+```
+
+Example 2 (using Compound to combine both types):
+```
+  Create and solve skeletons:
+    Type: Compound   
+    Components: [Create skeletons, Solve skeletons]
+  Create skeletons:
+    Type: Create skeleton
+    Calibration measurement: 'Static*'
+  Solve skeletons:
+    Type: Solve skeleton
+    Measurements: 'Running*'
+```
 
 ### Fields
 The fields section specifies all the fields that can be added to a type definition. There are also a number of field specifications hardcoded into QTM that are always added to the types. For a complete list, see the Default fields section.
