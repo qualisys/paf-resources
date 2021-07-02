@@ -25,6 +25,8 @@ Publication date: April 08, 2021
       - [Report analysis](#report-analysis)
       - [Compound](#compound)
       - [Instantiate template](#instantiate-template)
+      - [Create skeleton (Introduced in QTM 2021.2)](#create-skeleton-introduced-in-qtm-20212)
+      - [Solve skeleton (Introduced in QTM 2021.2)](#solve-skeleton-introduced-in-qtm-20212)
     - [Fields](#fields)
     - [Columns](#columns)
   - [Default fields added by QTM](#default-fields-added-by-qtm)
@@ -295,20 +297,19 @@ properties:
 
 #### Create skeleton (Introduced in QTM 2021.2)
 This analysis creates skeletons for the specified file provided that the correct marker names and prefixes are used (see the marker set guides in QTM > Skeleton for more information). It has the followng properties:
-- **Calibration measurement:** Required. A string to specifiy the file name to create the skeletons. Wildcard can be used in the name to avoid specifying the whole name. If multiple files are detected, the first measurement that matches the specified file name will be used.  Only measurements that are marked as used in the PAF pane will be affected.
-- **Frame:** Optional. An integer to specify the frame number that is used to create the skeletons. If not used, the default value is the frame located in the middle of the selected range.
+- **Calibration measurement:** Required. A string to specify the file name to create the skeletons. Wildcard can be used in the name to avoid specifying the whole name. If multiple files are detected, the first measurement that matches the specified file name will be used.  Only measurements that are marked as used in the PAF pane will be affected.
+> Note: Frame number that is used to create the skeletons is set to the middle of the selected range.
 
 #### Solve skeleton (Introduced in QTM 2021.2)
 This analysis solves skeletons for the specified files provided that the skeletons already exist  and that the correct marker names and prefixes are used (see the marker set guides in QTM > Skeleton for more information). It has the following properties:
-- **Measurements:** Required. A string or list of strings to specifiy the file names to solve the skeletons. Wildcard can be used in the name to specify multiple files at once. To specify all measurements, simply use the wildcard character.  Only measurements that are marked as used in the PAF pane will be affected.
-- **Exclude:** Optional. A string or list of strings to specifiy the file names to exclude. Wildcard can be used in the name to specify multiple files at once.  Only measurements that are marked as used in the PAF pane will be affected.
+- **Measurements:** Required. A string or list of strings to specify the file names to solve the skeletons. Wildcard can be used in the name to specify multiple files at once. To specify all measurements, simply use the wildcard character.  Only measurements that are marked as used in the PAF pane will be affected.
+- **Exclude:** Optional. A string or list of strings to specify the file names to exclude. Wildcard can be used in the name to specify multiple files at once.  Only measurements that are marked as used in the PAF pane will be affected.
 
 Example 1:
 ```
   Create skeletons:   
     Type: Create skeleton
     Calibration measurement: 'Static*'
-    Frame: 10
   Solve skeletons:
     Type: Solve skeleton
     Measurements: '*' 
