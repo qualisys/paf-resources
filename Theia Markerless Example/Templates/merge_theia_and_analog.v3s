@@ -93,6 +93,14 @@ foreach($measurements as $m) {
 		/PARAMETER_NAME=frame_rate_qtm
 		;
 			
+		Set_Pipeline_Parameter_To_Data_Value
+		/SIGNAL_TYPES=PARAMETERS
+		/SIGNAL_FOLDER=ANALOG
+		/SIGNAL_NAMES=RATE
+		! /SIGNAL_COMPONENTS=ALL_COMPONENTS
+		/PARAMETER_NAME=analog_rate_qtm
+		;
+			
 		!Make copy of all manually entered events ad store them in GLOBAL
 		Set_Pipeline_Parameter_To_List_Of_Signal_Names
 		/PARAMETER_NAME=ev
@@ -128,6 +136,12 @@ foreach($measurements as $m) {
 		! /QUERY=
 		;
 		
+		Set_Pipeline_Parameter_From_Expression
+		/PARAMETER_NAME=analog_to_point_ratio
+		/EXPRESSION=&::analog_rate_qtm& / PARAMETERS::POINT::RATE
+		! /AS_INTEGER=TRUE
+		;
+		
 		! import analog signals captured by QTM into Theia generated c3d
 		Import_Signals_From_C3D_File
 		/FILE_NAME=::theia_file
@@ -138,6 +152,7 @@ foreach($measurements as $m) {
 		! /IMPORT_ANALOG_THRESHOLD=0.0
 		! /IMPORT_ANALOG_ASCENDING=TRUE
 		! /ANALOG_RATE=
+		/ANALOG_RATIO=::analog_to_point_ratio
 		! /UPSAMPLE_TO_EXISTING_RATE=FALSE
 		! /INTERPOLATION_METHOD=CUBIC_SPLINE
 		! /IMPORT_AS_DERIVED=FALSE
