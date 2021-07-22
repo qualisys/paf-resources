@@ -11,6 +11,6 @@
     > Note: For Theia's processing, you can change the following settings using Templates\settings.php: save workspace, filter cutoff frequency and filter type. When saving the workspace, it will create a TheiaFormatData_workspace folder in your session where each subfolder is containing the Theia workspace of a measurement. To open the workspace of a measurement, click on File > Load Workspace and select the subfolder of your choice. If Theia is closed, double-click on the results.p3d included in the subfolder of your choice.
 
 Example tested with:
- - QTM 2021.1 (build 6300)
- - Visual3D 2021.03.2
+ - QTM 2021.1 (build 6350)
+ - Visual3D 2021.06.2
  - Theia 2021.1.1450
